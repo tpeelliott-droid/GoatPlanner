@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isTeamMember() {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/users/$(request.auth.uid));
+    }
+
+    match /idea-images/{ideaId}/{fileName} {
+      allow read: if isTeamMember();
+      allow write: if isTeamMember() && request.resource.size < 6 * 1024 * 1024;
+    }
+
+    match /voice-notes/{ideaId}/{fileName} {
+      allow read: if isTeamMember();
+      allow write: if isTeamMember() && request.resource.size < 30 * 1024 * 1024;
+    }
+
+    match /org-logos/{orgId}/{fileName} {
+      allow read: if isTeamMember();
+      allow write: if isTeamMember() && request.resource.size < 3 * 1024 * 1024;
+    }
+  }
+}

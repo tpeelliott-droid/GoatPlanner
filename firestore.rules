@@ -1,0 +1,117 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isTeamMember() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isTeamMember() && myProfile().role == 'admin';
+    }
+
+    function isOwnerField(field) {
+      return field in request.resource.data && request.resource.data[field] == request.auth.uid;
+    }
+
+    // ---- users ----
+    match /users/{userId} {
+      // Anyone signed in can read the team roster (needed for initials/avatars everywhere).
+      allow read: if isSignedIn();
+      // A user can create their own profile only once they've cleared the
+      // invite-only gate client-side (first-run admin bootstrap, or a
+      // matching pending invite) — reads above already require sign-in.
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // ---- invites ---- (Admin manages; a just-signed-in user (Firebase Auth
+    // succeeds before their Firestore profile exists) may only read/accept
+    // the invite matching their own verified email.)
+    match /invites/{inviteId} {
+      allow read: if isAdmin() ||
+        (isSignedIn() && resource.data.email == request.auth.token.email);
+      allow create, delete: if isAdmin();
+      allow update: if isSignedIn() && resource.data.email == request.auth.token.email;
+    }
+
+    // ---- ideas ----
+    match /ideas/{ideaId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && isOwnerField('ownerId');
+      allow update: if isTeamMember();
+      allow delete: if isAdmin();
+
+      match /entries/{entryId} {
+        allow read: if isTeamMember();
+        allow create: if isTeamMember() && request.resource.data.authorId == request.auth.uid;
+        allow update, delete: if isTeamMember() &&
+          (resource.data.authorId == request.auth.uid || isAdmin());
+      }
+    }
+
+    // ---- events ----
+    match /events/{eventId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember();
+      allow update: if isTeamMember();
+      allow delete: if isAdmin();
+    }
+
+    // ---- contentItems (pipeline) ----
+    match /contentItems/{itemId} {
+      allow read: if isTeamMember();
+      allow create, update: if isTeamMember();
+      allow delete: if isAdmin();
+    }
+
+    // ---- orgs ---- (dealNotes visibility is enforced client-side by hiding the field in the UI;
+    // Firestore rules cannot redact individual fields on a read, so treat the whole org doc as
+    // team-readable and keep genuinely sensitive figures out of dealNotes if that's not acceptable.)
+    match /orgs/{orgId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && isOwnerField('ownerId');
+      allow update: if isTeamMember();
+      allow delete: if isAdmin();
+    }
+
+    match /people/{personId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && isOwnerField('ownerId');
+      allow update: if isTeamMember();
+      allow delete: if isAdmin();
+    }
+
+    match /interactions/{interactionId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if isTeamMember() &&
+        (resource.data.authorId == request.auth.uid || isAdmin());
+    }
+
+    // ---- tasks ----
+    match /tasks/{taskId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && request.resource.data.creatorId == request.auth.uid;
+      allow update: if isTeamMember();
+      allow delete: if isAdmin();
+    }
+
+    // ---- activity log ---- (append-only)
+    match /activity/{entryId} {
+      allow read: if isTeamMember();
+      allow create: if isTeamMember() && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}

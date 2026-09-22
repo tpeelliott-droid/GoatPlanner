@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+@theme {
+  --color-dark-green: #164a42;
+  --color-fairway: #285e53;
+  --color-gold: #ffc531;
+  --color-parchment: #f4efe4;
+  --color-ink: #1b1b1b;
+  --color-rust: #c8622f;
+
+  --color-format-podcast: #ffc531;
+  --color-format-video: #c8622f;
+  --color-format-article: #8fa98e;
+  --color-format-instagram: #3e6b7d;
+
+  --font-display: "Oswald", "Archivo Condensed", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --radius-card: 12px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-dark-green);
+  color: var(--color-parchment);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+body.theme-light {
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+/* paper grain texture for parchment surfaces */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.arch-top {
+  border-top-left-radius: 999px 48px;
+  border-top-right-radius: 999px 48px;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  border-radius: 999px;
+}
+
+.double-rule {
+  position: relative;
+}
+.double-rule::after {
+  content: "";
+  display: block;
+  height: 3px;
+  margin-top: 6px;
+  background:
+    linear-gradient(currentColor, currentColor) top / 100% 1px no-repeat,
+    linear-gradient(currentColor, currentColor) bottom / 100% 1px no-repeat;
+  opacity: 0.35;
+}
