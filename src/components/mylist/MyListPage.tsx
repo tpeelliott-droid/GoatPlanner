@@ -68,7 +68,7 @@ export default function MyListPage() {
     <div className="space-y-5 px-4 py-4">
       <button
         onClick={() => setNewTaskOpen(true)}
-        className="flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-parchment/25 py-2.5 text-sm text-parchment/60"
+        className="flex w-full items-center justify-center gap-2 rounded-full border border-dashed border-ink/20 py-2.5 text-sm text-ink/60"
       >
         + Add a task
       </button>
@@ -80,16 +80,16 @@ export default function MyListPage() {
         if (list.length === 0) return null;
         return (
           <section key={group}>
-            <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
-              {group} <span className="text-parchment/30">· {list.length}</span>
+            <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
+              {group} <span className="text-ink/30">· {list.length}</span>
             </h3>
             <div className="space-y-2">
               {list.map((task) => (
-                <Card key={task.id}>
+                <Card key={task.id} accent="green">
                   <div className="flex items-start gap-3">
                     <button
                       onClick={() => profile && completeTask(task.id, profile.id)}
-                      className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full border border-parchment/30 text-transparent transition active:border-gold active:text-gold"
+                      className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full border border-ink/25 text-transparent transition active:border-fairway active:text-fairway"
                       aria-label="Complete task"
                     >
                       <Check size={12} />
@@ -102,9 +102,9 @@ export default function MyListPage() {
                           if (href) navigate(href);
                         }}
                       >
-                        <p className="truncate text-sm text-parchment">{task.title}</p>
+                        <p className="truncate text-sm text-ink">{task.title}</p>
                         {task.linkedLabel && (
-                          <p className="truncate text-xs text-parchment/50">{task.linkedLabel}</p>
+                          <p className="truncate text-xs text-ink/50">{task.linkedLabel}</p>
                         )}
                       </button>
                       <div className="mt-1.5 flex flex-wrap items-center gap-2">
@@ -117,14 +117,14 @@ export default function MyListPage() {
                         {task.priority === "high" && <StatusPill label="High priority" tone="overdue" />}
                         <button
                           onClick={() => task.dueDate && snoozeTask(task.id, addDays(task.dueDate.toDate(), 1))}
-                          className="flex items-center gap-1 text-[11px] text-parchment/40"
+                          className="flex items-center gap-1 text-[11px] text-ink/40"
                         >
                           <Clock size={12} /> +1 day
                         </button>
                         <select
                           value={task.assigneeId ?? ""}
                           onChange={(e) => reassignTask(task.id, e.target.value || null)}
-                          className="rounded-full border border-parchment/15 bg-transparent px-2 py-0.5 text-[11px] text-parchment/60"
+                          className="rounded-full border border-ink/12 bg-transparent px-2 py-0.5 text-[11px] text-ink/60"
                         >
                           <option value="">Unassigned</option>
                           {users.map((u) => (
@@ -147,7 +147,7 @@ export default function MyListPage() {
         <section>
           <button
             onClick={() => setShowDone((v) => !v)}
-            className="mb-2 font-display text-xs uppercase tracking-widest text-parchment/40"
+            className="mb-2 font-display text-xs uppercase tracking-widest text-ink/40"
           >
             Done ({done.length}) {showDone ? "▲" : "▼"}
           </button>
@@ -155,7 +155,7 @@ export default function MyListPage() {
             <div className="space-y-2">
               {done.map((task) => (
                 <Card key={task.id} onClick={() => reopenTask(task.id)}>
-                  <p className="truncate text-sm text-parchment/50 line-through">{task.title}</p>
+                  <p className="truncate text-sm text-ink/50 line-through">{task.title}</p>
                 </Card>
               ))}
             </div>

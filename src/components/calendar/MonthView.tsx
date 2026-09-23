@@ -47,20 +47,20 @@ export default function MonthView({
   return (
     <div className="px-4 py-3">
       <div className="mb-3 flex items-center justify-between">
-        <button onClick={() => setMonth((m) => addMonths(m, -1))} className="p-2 text-parchment/60">
+        <button onClick={() => setMonth((m) => addMonths(m, -1))} className="p-2 text-ink/60">
           <ChevronLeft size={18} />
         </button>
-        <p className="font-display text-sm uppercase tracking-widest text-parchment">
+        <p className="font-display text-sm uppercase tracking-widest text-ink">
           {format(month, "MMMM yyyy")}
         </p>
-        <button onClick={() => setMonth((m) => addMonths(m, 1))} className="p-2 text-parchment/60">
+        <button onClick={() => setMonth((m) => addMonths(m, 1))} className="p-2 text-ink/60">
           <ChevronRight size={18} />
         </button>
       </div>
 
       <div className="grid grid-cols-7 gap-1 text-center">
         {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
-          <p key={i} className="text-[10px] uppercase text-parchment/40">
+          <p key={i} className="text-[10px] uppercase text-ink/40">
             {d}
           </p>
         ))}
@@ -78,8 +78,8 @@ export default function MonthView({
               }}
               onDoubleClick={() => onSelectDay(day)}
               className={`flex aspect-square flex-col items-center justify-center gap-0.5 rounded-lg text-xs transition ${
-                isSelected ? "bg-fairway" : ""
-              } ${inMonth ? "text-parchment" : "text-parchment/25"}`}
+                isSelected ? "bg-fairway text-white" : inMonth ? "text-ink" : "text-ink/25"
+              }`}
             >
               <span className={isToday ? "flex h-5 w-5 items-center justify-center rounded-full bg-gold text-dark-green" : ""}>
                 {format(day, "d")}
@@ -101,28 +101,28 @@ export default function MonthView({
       {selected && (
         <div className="mt-4">
           <div className="mb-2 flex items-center justify-between">
-            <p className="font-display text-xs uppercase tracking-widest text-parchment/60">
+            <p className="font-display text-xs uppercase tracking-widest text-ink/60">
               {format(selected, "EEEE d MMMM")}
             </p>
             <button
               onClick={() => onSelectDay(selected)}
-              className="text-xs font-display uppercase tracking-wide text-gold"
+              className="text-xs font-display uppercase tracking-wide text-fairway"
             >
               + Add
             </button>
           </div>
           {selectedEvents.length === 0 ? (
-            <p className="text-sm text-parchment/40">Nothing scheduled.</p>
+            <p className="text-sm text-ink/40">Nothing scheduled.</p>
           ) : (
             <div className="space-y-1.5">
               {selectedEvents.map((event) => (
                 <button
                   key={event.id}
                   onClick={() => onSelectEvent(event.id)}
-                  className="flex w-full items-center justify-between rounded-lg bg-fairway/50 px-3 py-2 text-left text-sm text-parchment"
+                  className="flex w-full items-center justify-between rounded-lg bg-black/[0.035] px-3 py-2 text-left text-sm text-ink"
                 >
                   {event.title}
-                  <span className="text-xs text-parchment/50">
+                  <span className="text-xs text-ink/50">
                     {event.allDay ? "All day" : format(event.start.toDate(), "HH:mm")}
                   </span>
                 </button>

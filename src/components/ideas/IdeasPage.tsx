@@ -40,13 +40,13 @@ export default function IdeasPage() {
 
   return (
     <div className="px-4 py-4">
-      <div className="mb-3 flex gap-1 overflow-x-auto rounded-full bg-white/5 p-1">
+      <div className="mb-3 flex gap-1 overflow-x-auto rounded-full bg-black/[0.04] p-1">
         {(["all", ...FORMATS] as Segment[]).map((s) => (
           <button
             key={s}
             onClick={() => setSegment(s)}
             className={`flex-none rounded-full px-3 py-1.5 text-xs font-display uppercase tracking-wide transition ${
-              segment === s ? "bg-fairway text-parchment" : "text-parchment/50"
+              segment === s ? "bg-fairway text-white" : "text-ink/50"
             }`}
           >
             {s === "all" ? "All" : FORMAT_LABELS[s]}
@@ -58,7 +58,7 @@ export default function IdeasPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as IdeaStatus | "active")}
-          className="rounded-full border border-parchment/15 bg-transparent px-3 py-1.5 text-xs text-parchment/70"
+          className="rounded-full border border-ink/12 bg-transparent px-3 py-1.5 text-xs text-ink/70"
         >
           <option value="active">Active</option>
           {Object.entries(IDEA_STATUS_LABELS).map(([key, label]) => (
@@ -70,7 +70,7 @@ export default function IdeasPage() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as SortMode)}
-          className="rounded-full border border-parchment/15 bg-transparent px-3 py-1.5 text-xs text-parchment/70"
+          className="rounded-full border border-ink/12 bg-transparent px-3 py-1.5 text-xs text-ink/70"
         >
           <option value="newest">Newest</option>
           <option value="active">Recently active</option>
@@ -90,8 +90,8 @@ export default function IdeasPage() {
             <Card key={idea.id} onClick={() => navigate(`/ideas/${idea.id}`)}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-parchment">{idea.title}</p>
-                  {idea.pitch && <p className="truncate text-xs text-parchment/50">{idea.pitch}</p>}
+                  <p className="truncate text-sm font-medium text-ink">{idea.title}</p>
+                  {idea.pitch && <p className="truncate text-xs text-ink/50">{idea.pitch}</p>}
                 </div>
                 <div className="flex flex-none gap-1">{idea.formats.map((f) => <FormatChip key={f} format={f} />)}</div>
               </div>
@@ -100,14 +100,14 @@ export default function IdeasPage() {
                   <StatusPill label={IDEA_STATUS_LABELS[idea.status]} tone={idea.status === "parked" ? "parked" : "progress"} />
                   {owner && <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" />}
                   {idea.entryCount > 0 && (
-                    <span className="flex items-center gap-1 text-[11px] text-parchment/40">
+                    <span className="flex items-center gap-1 text-[11px] text-ink/40">
                       <MessageSquare size={11} /> {idea.entryCount}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
                   {idea.status === "scheduled" && (
-                    <span className="text-[11px] text-parchment/40">Scheduled</span>
+                    <span className="text-[11px] text-ink/40">Scheduled</span>
                   )}
                   <button
                     onClick={(e) => {
@@ -115,7 +115,7 @@ export default function IdeasPage() {
                       if (profile) toggleUpvote(idea, profile.id);
                     }}
                     className={`flex items-center gap-1 rounded-full px-2 py-1 text-[11px] transition ${
-                      upvoted ? "bg-gold text-dark-green" : "border border-parchment/15 text-parchment/50"
+                      upvoted ? "bg-gold text-dark-green" : "border border-ink/12 text-ink/50"
                     }`}
                   >
                     <ArrowUp size={11} /> {idea.upvotes.length}

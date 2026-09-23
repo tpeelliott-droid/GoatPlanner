@@ -2,10 +2,10 @@ type Tone = "progress" | "overdue" | "parked" | "neutral";
 
 export default function StatusPill({ label, tone = "neutral" }: { label: string; tone?: Tone }) {
   const toneClasses: Record<Tone, string> = {
-    progress: "bg-fairway text-parchment",
+    progress: "bg-fairway text-white",
     overdue: "border border-rust text-rust",
-    parked: "bg-white/10 text-parchment/60",
-    neutral: "bg-white/10 text-parchment/80",
+    parked: "bg-black/5 text-ink/50",
+    neutral: "bg-black/5 text-ink/70",
   };
 
   return (

@@ -22,8 +22,22 @@ const DEFAULT_DURATION_MIN: Record<EventType, number> = {
   deadline: 0,
 };
 
-function toLocalInputValue(date: Date) {
-  return format(date, "yyyy-MM-dd'T'HH:mm");
+function toDateStr(date: Date) {
+  return format(date, "yyyy-MM-dd");
+}
+
+function toTimeStr(date: Date) {
+  return format(date, "HH:mm");
+}
+
+function combine(dateStr: string, timeStr: string): Date {
+  return new Date(`${dateStr}T${timeStr || "00:00"}`);
+}
+
+function addMinutesToTime(timeStr: string, minutes: number): string {
+  const [h, m] = timeStr.split(":").map(Number);
+  const total = ((h * 60 + m + minutes) % (24 * 60) + 24 * 60) % (24 * 60);
+  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 }
 
 export default function EventForm({
@@ -56,21 +70,29 @@ export default function EventForm({
   const [type, setType] = useState<EventType>(existing?.type ?? "recording");
   const [formats, setFormats] = useState<Format[]>(existing?.formats ?? presetFormats ?? []);
   const [allDay, setAllDay] = useState(existing?.allDay ?? false);
-  const [start, setStart] = useState(toLocalInputValue(start0));
-  const [end, setEnd] = useState(toLocalInputValue(end0));
+  const [startDate, setStartDate] = useState(toDateStr(start0));
+  const [startTime, setStartTime] = useState(toTimeStr(start0));
+  const [endDate, setEndDate] = useState(toDateStr(end0));
+  const [endTime, setEndTime] = useState(toTimeStr(end0));
   const [location, setLocation] = useState(existing?.location ?? "");
   const [notes, setNotes] = useState(existing?.notes ?? "");
   const [attendeeIds, setAttendeeIds] = useState<string[]>(existing?.attendeeIds ?? (profile ? [profile.id] : []));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function handleStartDateChange(value: string) {
+    setStartDate(value);
+    // The end date always follows the start date — most events are same-day,
+    // and this is the one field a user is most likely to forget to update.
+    setEndDate(value);
+  }
+
   function handleTypeChange(nextType: EventType) {
     setType(nextType);
     if (!existing) {
-      const s = new Date(start);
       const dur = DEFAULT_DURATION_MIN[nextType];
       setAllDay(dur === 0);
-      if (dur > 0) setEnd(toLocalInputValue(new Date(s.getTime() + dur * 60000)));
+      if (dur > 0) setEndTime(addMinutesToTime(startTime, dur));
     }
   }
 
@@ -80,11 +102,11 @@ export default function EventForm({
 
   const clashes = useMemo(() => {
     if (allDay) return [];
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return [];
-    return findClashes(events, { start: startDate, end: endDate, attendeeIds, excludeId: existing?.id });
-  }, [events, start, end, attendeeIds, allDay, existing?.id]);
+    const startDateTime = combine(startDate, startTime);
+    const endDateTime = combine(endDate, endTime);
+    if (Number.isNaN(startDateTime.getTime()) || Number.isNaN(endDateTime.getTime())) return [];
+    return findClashes(events, { start: startDateTime, end: endDateTime, attendeeIds, excludeId: existing?.id });
+  }, [events, startDate, startTime, endDate, endTime, attendeeIds, allDay, existing?.id]);
 
   async function handleSave() {
     if (!profile) return;
@@ -92,8 +114,8 @@ export default function EventForm({
       setError("Give the event a title.");
       return;
     }
-    const startDate = new Date(start);
-    const endDate = allDay ? startDate : new Date(end);
+    const startDateTime = combine(startDate, allDay ? "00:00" : startTime);
+    const endDateTime = allDay ? startDateTime : combine(endDate, endTime);
     setSaving(true);
     setError(null);
     try {
@@ -112,8 +134,8 @@ export default function EventForm({
             title: title.trim(),
             type,
             formats,
-            start: startDate,
-            end: endDate,
+            start: startDateTime,
+            end: endDateTime,
             allDay,
             location,
             notes,
@@ -161,7 +183,7 @@ export default function EventForm({
               type="button"
               onClick={() => handleTypeChange(t)}
               className={`rounded-full px-3 py-1.5 text-xs font-display uppercase tracking-wide transition ${
-                type === t ? "bg-fairway text-parchment" : "border border-parchment/20 text-parchment/60"
+                type === t ? "bg-fairway text-white" : "border border-ink/15 text-ink/60"
               }`}
             >
               {EVENT_TYPE_LABELS[t]}
@@ -180,28 +202,36 @@ export default function EventForm({
           type="checkbox"
           checked={allDay}
           onChange={(e) => setAllDay(e.target.checked)}
-          className="h-4 w-4 accent-gold"
+          className="h-4 w-4 accent-fairway"
         />
-        <label htmlFor="allday" className="text-sm text-parchment/80">
+        <label htmlFor="allday" className="text-sm text-ink/80">
           All day
         </label>
       </div>
 
-      <Field label={allDay ? "Date" : "Starts"}>
-        <TextInput
-          type={allDay ? "date" : "datetime-local"}
-          value={allDay ? start.slice(0, 10) : start}
-          onChange={(e) => setStart(e.target.value)}
-        />
-      </Field>
-      {!allDay && (
-        <Field label="Ends">
-          <TextInput type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
+      {allDay ? (
+        <Field label="Date">
+          <TextInput type="date" value={startDate} onChange={(e) => handleStartDateChange(e.target.value)} />
         </Field>
+      ) : (
+        <>
+          <Field label="Starts">
+            <div className="grid grid-cols-2 gap-2">
+              <TextInput type="date" value={startDate} onChange={(e) => handleStartDateChange(e.target.value)} />
+              <TextInput type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+            </div>
+          </Field>
+          <Field label="Ends">
+            <div className="grid grid-cols-2 gap-2">
+              <TextInput type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+              <TextInput type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+            </div>
+          </Field>
+        </>
       )}
 
       {clashes.length > 0 && (
-        <div className="mb-4 rounded-lg border border-rust/50 bg-rust/10 px-3 py-2 text-xs text-rust">
+        <div className="mb-4 rounded-lg border border-rust/40 bg-rust/[0.07] px-3 py-2 text-xs text-rust">
           Clash: overlaps with "{clashes[0].title}"
           {clashes.length > 1 ? ` and ${clashes.length - 1} more` : ""}.
         </div>
@@ -223,7 +253,7 @@ export default function EventForm({
               type="button"
               onClick={() => toggleAttendee(u.id)}
               className={`flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2.5 text-xs transition ${
-                attendeeIds.includes(u.id) ? "bg-fairway" : "border border-parchment/15"
+                attendeeIds.includes(u.id) ? "bg-fairway text-white" : "border border-ink/12 text-ink"
               }`}
             >
               <InitialsChip initials={u.initials} colour={u.colour} size="xs" />
@@ -244,4 +274,3 @@ export default function EventForm({
     </Sheet>
   );
 }
-

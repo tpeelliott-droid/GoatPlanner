@@ -48,20 +48,20 @@ export default function SettingsPage() {
 
   return (
     <div className="px-4 py-4">
-      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-parchment/60">
+      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-ink/60">
         <ArrowLeft size={16} /> Back
       </button>
 
       <div className="mb-6 flex items-center gap-3">
         <InitialsChip initials={profile.initials} colour={profile.colour} size="md" />
         <div>
-          <p className="text-sm text-parchment">{profile.name}</p>
-          <p className="text-xs text-parchment/50 capitalize">{profile.role}</p>
+          <p className="text-sm text-ink">{profile.name}</p>
+          <p className="text-xs text-ink/50 capitalize">{profile.role}</p>
         </div>
       </div>
 
       <section className="mb-6">
-        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-parchment/60">
+        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-ink/60">
           Profile
         </h3>
         <Field label="Name">
@@ -85,7 +85,7 @@ export default function SettingsPage() {
       </section>
 
       <section className="mb-6">
-        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-parchment/60">
+        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-ink/60">
           Notifications
         </h3>
         <Button variant="ghost" onClick={handleEnablePush} disabled={pushStatus === "requesting"}>
@@ -100,24 +100,24 @@ export default function SettingsPage() {
       </section>
 
       <section className="mb-6">
-        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-parchment/60">
+        <h3 className="double-rule mb-3 font-display text-xs uppercase tracking-widest text-ink/60">
           Calendar sync
         </h3>
-        <p className="mb-2 text-xs text-parchment/50">
+        <p className="mb-2 text-xs text-ink/50">
           Subscribe in Google Calendar, Outlook or Apple Calendar with this private link.
         </p>
         <div className="flex items-center gap-2">
           <TextInput readOnly value={feedUrl} className="truncate" />
           <button
             onClick={() => navigator.clipboard.writeText(feedUrl)}
-            className="flex-none rounded-lg border border-parchment/15 p-2.5 text-parchment/60"
+            className="flex-none rounded-lg border border-ink/12 p-2.5 text-ink/60"
             aria-label="Copy link"
           >
             <Copy size={16} />
           </button>
           <button
             onClick={handleRegenerateFeed}
-            className="flex-none rounded-lg border border-parchment/15 p-2.5 text-parchment/60"
+            className="flex-none rounded-lg border border-ink/12 p-2.5 text-ink/60"
             aria-label="Regenerate link"
           >
             <RefreshCw size={16} />

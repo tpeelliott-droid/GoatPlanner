@@ -63,9 +63,9 @@ export default function EventDetailSheet({
         ))}
       </div>
 
-      <p className="mb-1 text-sm text-parchment">{friendlyDate(event.start)}</p>
+      <p className="mb-1 text-sm text-ink">{friendlyDate(event.start)}</p>
       {event.location && (
-        <p className="mb-3 flex items-center gap-1.5 text-sm text-parchment/60">
+        <p className="mb-3 flex items-center gap-1.5 text-sm text-ink/60">
           <MapPin size={14} /> {event.location}
         </p>
       )}
@@ -90,27 +90,27 @@ export default function EventDetailSheet({
         </div>
       )}
 
-      {event.notes && <p className="mb-4 whitespace-pre-wrap text-sm text-parchment/70">{event.notes}</p>}
+      {event.notes && <p className="mb-4 whitespace-pre-wrap text-sm text-ink/70">{event.notes}</p>}
 
       <div className="mb-4">
         <div className="mb-2 flex items-center justify-between">
-          <p className="font-display text-xs uppercase tracking-widest text-parchment/50">Linked ideas</p>
-          <button onClick={() => setLinkingIdea(true)} className="text-xs font-display uppercase text-gold">
+          <p className="font-display text-xs uppercase tracking-widest text-ink/50">Linked ideas</p>
+          <button onClick={() => setLinkingIdea(true)} className="text-xs font-display uppercase text-fairway">
             + Link idea
           </button>
         </div>
         {linkedIdeas.length === 0 ? (
-          <p className="text-sm text-parchment/40">No ideas linked yet.</p>
+          <p className="text-sm text-ink/40">No ideas linked yet.</p>
         ) : (
           <div className="space-y-1.5">
             {linkedIdeas.map((idea) => (
-              <div key={idea.id} className="flex items-center justify-between rounded-lg bg-fairway/50 px-3 py-2">
-                <button onClick={() => navigate(`/ideas/${idea.id}`)} className="truncate text-left text-sm text-parchment">
+              <div key={idea.id} className="flex items-center justify-between rounded-lg bg-black/[0.035] px-3 py-2">
+                <button onClick={() => navigate(`/ideas/${idea.id}`)} className="truncate text-left text-sm text-ink">
                   {idea.title}
                 </button>
                 <button
                   onClick={() => unlinkIdeaFromEvent(event.id, idea.id)}
-                  className="text-xs text-parchment/40"
+                  className="text-xs text-ink/40"
                 >
                   Unlink
                 </button>

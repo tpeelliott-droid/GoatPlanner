@@ -40,7 +40,7 @@ export default function AgendaView({
     <div className="divide-y divide-white/5 px-4">
       {groups.map(([key, dayEvents]) => (
         <div key={key} className="py-3">
-          <p className="mb-2 font-display text-xs uppercase tracking-widest text-parchment/50">
+          <p className="mb-2 font-display text-xs uppercase tracking-widest text-ink/50">
             {format(new Date(key), "EEEE d MMMM")}
           </p>
           <div className="space-y-2">
@@ -48,11 +48,11 @@ export default function AgendaView({
               <button
                 key={event.id}
                 onClick={() => onSelect(event.id)}
-                className="flex w-full items-start justify-between gap-3 rounded-lg bg-fairway/50 px-3 py-2.5 text-left"
+                className="flex w-full items-start justify-between gap-3 rounded-lg bg-black/[0.035] px-3 py-2.5 text-left"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm text-parchment">{event.title}</p>
-                  <p className="text-xs text-parchment/50">
+                  <p className="truncate text-sm text-ink">{event.title}</p>
+                  <p className="text-xs text-ink/50">
                     {event.allDay ? EVENT_TYPE_LABELS[event.type] : format(event.start.toDate(), "HH:mm")}
                     {event.location ? ` · ${event.location}` : ""}
                   </p>

@@ -36,14 +36,14 @@ export default function CalendarPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="space-y-3 border-b border-white/10 px-4 py-3">
-        <div className="flex gap-1 rounded-full bg-white/5 p-1">
+      <div className="space-y-3 border-b border-black/10 px-4 py-3">
+        <div className="flex gap-1 rounded-full bg-black/[0.04] p-1">
           {(["agenda", "week", "month"] as ViewMode[]).map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
               className={`flex-1 rounded-full py-1.5 text-xs font-display uppercase tracking-wide transition ${
-                view === v ? "bg-fairway text-parchment" : "text-parchment/50"
+                view === v ? "bg-fairway text-white" : "text-ink/50"
               }`}
             >
               {v}
@@ -114,7 +114,7 @@ function FilterChip({
     <button
       onClick={onClick}
       className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs transition ${
-        active ? "bg-fairway text-parchment" : "border border-parchment/15 text-parchment/60"
+        active ? "bg-fairway text-white" : "border border-ink/12 text-ink/60"
       }`}
     >
       {dot && <span className="h-2 w-2 rounded-full" style={{ backgroundColor: dot }} />}

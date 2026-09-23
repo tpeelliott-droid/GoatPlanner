@@ -16,15 +16,15 @@ export default function IdeaActivity({ ideaId }: { ideaId: string }) {
 
   return (
     <section className="mb-5">
-      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
+      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
         Activity
       </h3>
       <ul className="space-y-1.5">
         {activity.slice(0, 15).map((a) => (
           <li key={a.id} className="flex items-center gap-2 text-xs">
             <InitialsChip initials={a.authorInitials} size="xs" />
-            <span className="text-parchment/60">{a.action}</span>
-            <span className="ml-auto flex-none text-parchment/30">{relativeTime(a.createdAt)}</span>
+            <span className="text-ink/60">{a.action}</span>
+            <span className="ml-auto flex-none text-ink/30">{relativeTime(a.createdAt)}</span>
           </li>
         ))}
       </ul>

@@ -52,14 +52,14 @@ export default function LinkIdeaSheet({
         className="mb-3"
       />
       <div className="max-h-[50vh] space-y-1.5 overflow-y-auto">
-        {candidates.length === 0 && <p className="text-sm text-parchment/40">No matching ideas.</p>}
+        {candidates.length === 0 && <p className="text-sm text-ink/40">No matching ideas.</p>}
         {candidates.map((idea) => (
           <button
             key={idea.id}
             onClick={() => link(idea.id, idea.title)}
-            className="flex w-full items-center justify-between gap-2 rounded-lg bg-fairway/50 px-3 py-2.5 text-left"
+            className="flex w-full items-center justify-between gap-2 rounded-lg bg-black/[0.035] px-3 py-2.5 text-left"
           >
-            <span className="truncate text-sm text-parchment">{idea.title}</span>
+            <span className="truncate text-sm text-ink">{idea.title}</span>
             <div className="flex flex-none gap-1">{idea.formats.slice(0, 2).map((f) => <FormatChip key={f} format={f} />)}</div>
           </button>
         ))}

@@ -9,7 +9,6 @@ const TITLES: Record<string, string> = {
   "/": "Home",
   "/calendar": "Calendar",
   "/ideas": "Ideas",
-  "/pipeline": "Pipeline",
   "/network": "Network",
   "/my-list": "My List",
   "/settings": "Settings",
@@ -29,15 +28,15 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-dark-green px-4 py-3 safe-top">
-        <h1 className="font-display text-lg uppercase tracking-wider text-parchment">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-black/10 bg-white px-4 py-3 safe-top">
+        <h1 className="font-display text-lg uppercase tracking-wider text-dark-green">
           {titleFor(pathname)}
         </h1>
         <div className="flex items-center gap-3">
           <button
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
-            className="rounded-full p-2 text-parchment/70 transition active:bg-white/10"
+            className="rounded-full p-2 text-ink/60 transition active:bg-black/5"
           >
             <Search size={20} />
           </button>

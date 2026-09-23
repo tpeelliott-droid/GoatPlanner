@@ -17,10 +17,10 @@ export default function Button({
   ...rest
 }: Props) {
   const variantClasses: Record<Variant, string> = {
-    primary: "bg-fairway text-parchment",
+    primary: "bg-fairway text-white",
     accent: "bg-gold text-dark-green",
     destructive: "border border-rust text-rust bg-transparent",
-    ghost: "border border-parchment/25 text-parchment bg-transparent",
+    ghost: "border border-ink/20 text-ink bg-transparent",
   };
 
   return (

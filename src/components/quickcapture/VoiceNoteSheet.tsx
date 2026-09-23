@@ -105,15 +105,15 @@ export default function VoiceNoteSheet({
           }`}
         >
           {recording ? (
-            <Square size={28} className="text-parchment" />
+            <Square size={28} className="text-white" />
           ) : (
             <Mic size={28} className="text-dark-green" />
           )}
         </button>
-        <p className="font-display text-2xl tabular-nums text-parchment">
+        <p className="font-display text-2xl tabular-nums text-ink">
           {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")}
         </p>
-        <p className="text-xs text-parchment/50">
+        <p className="text-xs text-ink/50">
           {recording ? "Recording — tap to stop (max 3:00)" : blob ? "Recorded" : "Tap to record"}
         </p>
       </div>
@@ -124,7 +124,7 @@ export default function VoiceNoteSheet({
             <select
               value={targetIdeaId}
               onChange={(e) => setTargetIdeaId(e.target.value)}
-              className="w-full rounded-lg border border-parchment/15 bg-white/5 px-3 py-2.5 text-sm text-parchment focus:border-gold focus:outline-none"
+              className="w-full rounded-lg border border-ink/12 bg-black/[0.04] px-3 py-2.5 text-sm text-ink focus:border-gold focus:outline-none"
             >
               <option value="__new__">New idea</option>
               {ideas.slice(0, 25).map((idea) => (

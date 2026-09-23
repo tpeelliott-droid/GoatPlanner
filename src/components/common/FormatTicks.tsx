@@ -25,7 +25,7 @@ export default function FormatTicks({
             style={
               active
                 ? { backgroundColor: FORMAT_COLOURS[format], color: FORMAT_TEXT_ON_CHIP[format] }
-                : { border: "1px solid rgba(244,239,228,0.25)", color: "rgba(244,239,228,0.7)" }
+                : { border: "1px solid rgba(27,27,27,0.15)", color: "rgba(27,27,27,0.6)" }
             }
           >
             {FORMAT_LABELS[format]}

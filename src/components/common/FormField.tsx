@@ -1,11 +1,11 @@
 import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
 
 const fieldClass =
-  "w-full rounded-lg border border-parchment/15 bg-white/5 px-3 py-2.5 text-sm text-parchment placeholder:text-parchment/35 focus:border-gold focus:outline-none";
+  "w-full rounded-lg border border-ink/15 bg-black/[0.02] px-3 py-2.5 text-sm text-ink placeholder:text-ink/35 focus:border-fairway focus:outline-none";
 
 export function Label({ children }: { children: ReactNode }) {
   return (
-    <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-parchment/50">
+    <label className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-ink/50">
       {children}
     </label>
   );

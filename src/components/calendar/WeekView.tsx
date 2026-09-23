@@ -17,13 +17,13 @@ export default function WeekView({
   return (
     <div className="px-4 py-3">
       <div className="mb-3 flex items-center justify-between">
-        <button onClick={() => setAnchor((a) => addDays(a, -7))} className="p-2 text-parchment/60">
+        <button onClick={() => setAnchor((a) => addDays(a, -7))} className="p-2 text-ink/60">
           <ChevronLeft size={18} />
         </button>
-        <p className="font-display text-xs uppercase tracking-widest text-parchment/60">
+        <p className="font-display text-xs uppercase tracking-widest text-ink/60">
           {format(days[0], "d MMM")} – {format(days[6], "d MMM")}
         </p>
-        <button onClick={() => setAnchor((a) => addDays(a, 7))} className="p-2 text-parchment/60">
+        <button onClick={() => setAnchor((a) => addDays(a, 7))} className="p-2 text-ink/60">
           <ChevronRight size={18} />
         </button>
       </div>
@@ -36,26 +36,26 @@ export default function WeekView({
           return (
             <div key={day.toISOString()} className="flex gap-3">
               <div className="w-12 flex-none pt-1 text-center">
-                <p className="text-[10px] uppercase text-parchment/40">{format(day, "EEE")}</p>
+                <p className="text-[10px] uppercase text-ink/40">{format(day, "EEE")}</p>
                 <p
                   className={`font-display text-sm ${
-                    isSameDay(day, new Date()) ? "text-gold" : "text-parchment"
+                    isSameDay(day, new Date()) ? "text-dark-green font-semibold" : "text-ink"
                   }`}
                 >
                   {format(day, "d")}
                 </p>
               </div>
-              <div className="min-w-0 flex-1 space-y-1.5 border-l border-white/10 pl-3">
+              <div className="min-w-0 flex-1 space-y-1.5 border-l border-black/10 pl-3">
                 {dayEvents.length === 0 ? (
-                  <p className="py-1.5 text-xs text-parchment/25">—</p>
+                  <p className="py-1.5 text-xs text-ink/25">—</p>
                 ) : (
                   dayEvents.map((event) => (
                     <button
                       key={event.id}
                       onClick={() => onSelect(event.id)}
-                      className="flex w-full items-center justify-between gap-2 rounded-lg bg-fairway/50 px-2.5 py-1.5 text-left"
+                      className="flex w-full items-center justify-between gap-2 rounded-lg bg-black/[0.035] px-2.5 py-1.5 text-left"
                     >
-                      <span className="truncate text-xs text-parchment">
+                      <span className="truncate text-xs text-ink">
                         {!event.allDay && `${format(event.start.toDate(), "HH:mm")} · `}
                         {event.title}
                       </span>

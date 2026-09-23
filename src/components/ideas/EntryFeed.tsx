@@ -81,7 +81,7 @@ export default function EntryFeed({ ideaId }: { ideaId: string }) {
 
   return (
     <section className="mb-5">
-      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
+      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
         Notes &amp; attachments
       </h3>
 
@@ -102,13 +102,13 @@ export default function EntryFeed({ ideaId }: { ideaId: string }) {
             <div key={entry.id} className="flex gap-2.5">
               <InitialsChip initials={entry.authorInitials} size="xs" />
               <div className="min-w-0 flex-1">
-                {entry.type === "note" && <p className="whitespace-pre-wrap text-sm text-parchment">{entry.body}</p>}
+                {entry.type === "note" && <p className="whitespace-pre-wrap text-sm text-ink">{entry.body}</p>}
                 {entry.type === "link" && (
                   <a
                     href={entry.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="block truncate text-sm text-gold underline"
+                    className="block truncate text-sm text-fairway underline"
                   >
                     {entry.linkTitle || entry.url}
                   </a>
@@ -116,7 +116,7 @@ export default function EntryFeed({ ideaId }: { ideaId: string }) {
                 {entry.type === "voice" && (
                   <audio controls src={entry.url} className="h-8 w-full max-w-xs" />
                 )}
-                <p className="mt-0.5 text-[11px] text-parchment/40">{relativeTime(entry.createdAt)}</p>
+                <p className="mt-0.5 text-[11px] text-ink/40">{relativeTime(entry.createdAt)}</p>
               </div>
             </div>
           ))}
@@ -145,14 +145,14 @@ export default function EntryFeed({ ideaId }: { ideaId: string }) {
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex-none rounded-lg border border-parchment/15 p-2.5 text-parchment/60"
+          className="flex-none rounded-lg border border-ink/12 p-2.5 text-ink/60"
           aria-label="Add image"
         >
           <ImageIcon size={16} />
         </button>
         <button
           onClick={() => setShowLinkInput((v) => !v)}
-          className="flex-none rounded-lg border border-parchment/15 p-2.5 text-parchment/60"
+          className="flex-none rounded-lg border border-ink/12 p-2.5 text-ink/60"
           aria-label="Add link"
         >
           <LinkIcon size={16} />

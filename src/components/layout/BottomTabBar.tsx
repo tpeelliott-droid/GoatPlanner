@@ -1,18 +1,17 @@
 import { NavLink } from "react-router-dom";
-import { Calendar, Home, Lightbulb, KanbanSquare, Users } from "lucide-react";
+import { Calendar, Home, Lightbulb, Users } from "lucide-react";
 import clsx from "clsx";
 
 const TABS = [
   { to: "/", label: "Home", icon: Home, end: true },
   { to: "/calendar", label: "Calendar", icon: Calendar, end: false },
   { to: "/ideas", label: "Ideas", icon: Lightbulb, end: false },
-  { to: "/pipeline", label: "Pipeline", icon: KanbanSquare, end: false },
   { to: "/network", label: "Network", icon: Users, end: false },
 ];
 
 export default function BottomTabBar() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-dark-green safe-bottom">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-black/10 bg-white safe-bottom">
       <ul className="mx-auto flex max-w-lg items-stretch">
         {TABS.map(({ to, label, icon: Icon, end }) => (
           <li key={to} className="flex-1">
@@ -22,7 +21,7 @@ export default function BottomTabBar() {
               className={({ isActive }) =>
                 clsx(
                   "flex flex-col items-center gap-1 py-2.5 text-[10px] font-display uppercase tracking-wide transition-colors",
-                  isActive ? "text-gold" : "text-parchment/50",
+                  isActive ? "text-dark-green" : "text-ink/40",
                 )
               }
             >

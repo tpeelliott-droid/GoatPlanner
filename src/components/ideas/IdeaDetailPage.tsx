@@ -12,7 +12,6 @@ import IdeaScheduling from "./IdeaScheduling";
 import IdeaPeople from "./IdeaPeople";
 import IdeaActivity from "./IdeaActivity";
 import { toggleUpvote, updateIdea, useIdea } from "../../hooks/useIdeas";
-import { createContentItem, useContentItems } from "../../hooks/useContentItems";
 import { useUsers, useUserMap } from "../../hooks/useUsers";
 import { useAuthStore } from "../../store/useAuthStore";
 import { IDEA_STATUS_LABELS, type Format, type IdeaStatus } from "../../types";
@@ -25,7 +24,6 @@ export default function IdeaDetailPage() {
   const profile = useAuthStore((s) => s.profile);
   const { idea, loading } = useIdea(id);
   const { data: users } = useUsers();
-  const { data: contentItems } = useContentItems();
   const userMap = useUserMap(users);
 
   const [editingTitle, setEditingTitle] = useState(false);
@@ -35,9 +33,9 @@ export default function IdeaDetailPage() {
   if (loading) return null;
   if (!idea) {
     return (
-      <div className="px-4 py-8 text-center text-sm text-parchment/50">
+      <div className="px-4 py-8 text-center text-sm text-ink/50">
         Idea not found.{" "}
-        <button onClick={() => navigate("/ideas")} className="text-gold">
+        <button onClick={() => navigate("/ideas")} className="text-fairway underline">
           Back to Ideas
         </button>
       </div>
@@ -62,16 +60,6 @@ export default function IdeaDetailPage() {
   async function handleStatusChange(status: IdeaStatus) {
     if (!actor || !idea) return;
     await updateIdea(idea.id, { status }, actor, `changed status to ${IDEA_STATUS_LABELS[status]}`, idea.title);
-    if (status === "approved") {
-      const existingFormats = new Set(
-        contentItems.filter((c) => c.ideaId === idea.id).map((c) => c.format),
-      );
-      for (const format of idea.formats) {
-        if (!existingFormats.has(format)) {
-          await createContentItem(idea.id, format, actor, idea.title);
-        }
-      }
-    }
   }
 
   async function handleArchive() {
@@ -81,7 +69,7 @@ export default function IdeaDetailPage() {
 
   return (
     <div className="px-4 py-4">
-      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-parchment/60">
+      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-ink/50">
         <ArrowLeft size={16} /> Back
       </button>
 
@@ -101,8 +89,8 @@ export default function IdeaDetailPage() {
           </div>
         ) : (
           <button className="text-left" onClick={() => setEditingTitle(true)}>
-            <h2 className="font-display text-xl text-parchment">{idea.title}</h2>
-            {idea.pitch && <p className="mt-1 text-sm text-parchment/60">{idea.pitch}</p>}
+            <h2 className="font-display text-xl text-dark-green">{idea.title}</h2>
+            {idea.pitch && <p className="mt-1 text-sm text-ink/60">{idea.pitch}</p>}
           </button>
         )}
       </div>
@@ -123,7 +111,7 @@ export default function IdeaDetailPage() {
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {owner && (
-            <span className="flex items-center gap-1.5 text-xs text-parchment/50">
+            <span className="flex items-center gap-1.5 text-xs text-ink/50">
               <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" /> {owner.name}
             </span>
           )}
@@ -131,7 +119,7 @@ export default function IdeaDetailPage() {
         <button
           onClick={() => profile && toggleUpvote(idea, profile.id)}
           className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs transition ${
-            upvoted ? "bg-gold text-dark-green" : "border border-parchment/15 text-parchment/50"
+            upvoted ? "bg-gold text-dark-green" : "border border-ink/15 text-ink/50"
           }`}
         >
           <ArrowUp size={12} /> {idea.upvotes.length}
@@ -147,7 +135,7 @@ export default function IdeaDetailPage() {
       {idea.status !== "parked" && (
         <button
           onClick={handleArchive}
-          className="mt-6 flex items-center gap-1.5 text-xs text-parchment/40"
+          className="mt-6 flex items-center gap-1.5 text-xs text-ink/40"
         >
           <Trash2 size={13} /> Park this idea
         </button>

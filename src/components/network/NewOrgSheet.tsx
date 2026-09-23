@@ -50,7 +50,7 @@ export default function NewOrgSheet({ onClose }: { onClose: () => void }) {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value as OrgCategory)}
-          className="w-full rounded-lg border border-parchment/15 bg-white/5 px-3 py-2.5 text-sm text-parchment"
+          className="w-full rounded-lg border border-ink/12 bg-black/[0.04] px-3 py-2.5 text-sm text-ink"
         >
           {Object.entries(ORG_CATEGORY_LABELS).map(([k, v]) => (
             <option key={k} value={k}>

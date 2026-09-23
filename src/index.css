@@ -21,7 +21,7 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html,
@@ -32,15 +32,10 @@ body,
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-dark-green);
-  color: var(--color-parchment);
+  background-color: #ffffff;
+  color: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
-}
-
-body.theme-light {
-  background-color: var(--color-parchment);
-  color: var(--color-ink);
 }
 
 .font-display {

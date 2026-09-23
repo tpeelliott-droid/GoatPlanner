@@ -41,13 +41,13 @@ export default function NetworkPage() {
 
   return (
     <div className="px-4 py-4">
-      <div className="mb-3 flex gap-1 rounded-full bg-white/5 p-1">
+      <div className="mb-3 flex gap-1 rounded-full bg-black/[0.04] p-1">
         {(["orgs", "people", "wantToTalkTo"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`flex-1 rounded-full py-1.5 text-xs font-display uppercase tracking-wide transition ${
-              tab === t ? "bg-fairway text-parchment" : "text-parchment/50"
+              tab === t ? "bg-fairway text-white" : "text-ink/50"
             }`}
           >
             {t === "orgs" ? "Orgs" : t === "people" ? "People" : "Want to talk to"}
@@ -67,7 +67,7 @@ export default function NetworkPage() {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as OrgCategory | "all")}
-              className="rounded-full border border-parchment/15 bg-transparent px-3 py-1.5 text-xs text-parchment/70"
+              className="rounded-full border border-ink/12 bg-transparent px-3 py-1.5 text-xs text-ink/70"
             >
               <option value="all">All categories</option>
               {Object.entries(ORG_CATEGORY_LABELS).map(([k, v]) => (
@@ -79,7 +79,7 @@ export default function NetworkPage() {
             <select
               value={stage}
               onChange={(e) => setStage(e.target.value)}
-              className="rounded-full border border-parchment/15 bg-transparent px-3 py-1.5 text-xs text-parchment/70"
+              className="rounded-full border border-ink/12 bg-transparent px-3 py-1.5 text-xs text-ink/70"
             >
               <option value="all">All stages</option>
               {PARTNERSHIP_STAGES.map((s) => (
@@ -98,8 +98,8 @@ export default function NetworkPage() {
                 <Card key={org.id} onClick={() => navigate(`/network/orgs/${org.id}`)}>
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-parchment">{org.name}</p>
-                      <p className="text-xs text-parchment/50">{ORG_CATEGORY_LABELS[org.category]}</p>
+                      <p className="truncate text-sm font-medium text-ink">{org.name}</p>
+                      <p className="text-xs text-ink/50">{ORG_CATEGORY_LABELS[org.category]}</p>
                     </div>
                     <div className="flex flex-none items-center gap-2">
                       {owner && <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" />}
@@ -121,18 +121,18 @@ export default function NetworkPage() {
               <Card key={person.id} onClick={() => navigate(`/network/people/${person.id}`)}>
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-parchment">
+                    <p className="truncate text-sm font-medium text-ink">
                       {person.starred && <Star size={12} className="mr-1 inline text-gold" />}
                       {person.name}
                     </p>
-                    {person.role && <p className="truncate text-xs text-parchment/50">{person.role}</p>}
+                    {person.role && <p className="truncate text-xs text-ink/50">{person.role}</p>}
                   </div>
                   <div className="flex flex-none gap-1">
                     {person.phone && (
                       <a
                         href={`tel:${person.phone}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="rounded-full bg-fairway/60 p-1.5 text-parchment"
+                        className="rounded-full bg-black/[0.045] p-1.5 text-ink"
                       >
                         <Phone size={13} />
                       </a>
@@ -143,7 +143,7 @@ export default function NetworkPage() {
                         onClick={(e) => e.stopPropagation()}
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-full bg-fairway/60 p-1.5 text-parchment"
+                        className="rounded-full bg-black/[0.045] p-1.5 text-ink"
                       >
                         <MessageCircle size={13} />
                       </a>
@@ -152,7 +152,7 @@ export default function NetworkPage() {
                       <a
                         href={`mailto:${person.email}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="rounded-full bg-fairway/60 p-1.5 text-parchment"
+                        className="rounded-full bg-black/[0.045] p-1.5 text-ink"
                       >
                         <Mail size={13} />
                       </a>
@@ -173,9 +173,9 @@ export default function NetworkPage() {
           <div className="space-y-2">
             {wantToTalkTo.map((org) => (
               <Card key={org.id} onClick={() => navigate(`/network/orgs/${org.id}`)}>
-                <p className="text-sm font-medium text-parchment">{org.name}</p>
+                <p className="text-sm font-medium text-ink">{org.name}</p>
                 {org.wantToTalkToReason && (
-                  <p className="mt-1 text-xs text-parchment/50">{org.wantToTalkToReason}</p>
+                  <p className="mt-1 text-xs text-ink/50">{org.wantToTalkToReason}</p>
                 )}
               </Card>
             ))}

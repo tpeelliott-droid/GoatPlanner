@@ -62,7 +62,7 @@ export default function InteractionForm({
               key={t}
               onClick={() => setType(t)}
               className={`rounded-full px-3 py-1.5 text-xs uppercase transition ${
-                type === t ? "bg-fairway text-parchment" : "border border-parchment/15 text-parchment/60"
+                type === t ? "bg-fairway text-white" : "border border-ink/12 text-ink/60"
               }`}
             >
               {INTERACTION_TYPE_LABELS[t]}

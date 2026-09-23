@@ -21,13 +21,13 @@ export default function FormatAngles({ idea }: { idea: Idea }) {
 
   return (
     <section className="mb-5">
-      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
+      <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
         Format angles
       </h3>
       <div className="space-y-2">
         {idea.formats.map((format) => (
           <div key={format}>
-            <p className="mb-1 text-xs text-parchment/50">{FORMAT_LABELS[format]} angle</p>
+            <p className="mb-1 text-xs text-ink/50">{FORMAT_LABELS[format]} angle</p>
             <TextArea
               rows={2}
               defaultValue={idea.formatAngles?.[format] ?? ""}

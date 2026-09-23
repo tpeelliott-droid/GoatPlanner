@@ -5,7 +5,7 @@ import QuickCaptureButton from "../quickcapture/QuickCaptureButton";
 
 export default function AppShell() {
   return (
-    <div className="flex h-dvh flex-col bg-dark-green">
+    <div className="flex h-dvh flex-col bg-white">
       <Header />
       <main className="flex-1 overflow-y-auto pb-24">
         <Outlet />

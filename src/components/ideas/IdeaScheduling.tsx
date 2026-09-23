@@ -17,25 +17,25 @@ export default function IdeaScheduling({ idea }: { idea: Idea }) {
   return (
     <section className="mb-5">
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="font-display text-xs uppercase tracking-widest text-parchment/60">Scheduling</h3>
-        <button onClick={() => setScheduling(true)} className="text-xs font-display uppercase text-gold">
+        <h3 className="font-display text-xs uppercase tracking-widest text-ink/60">Scheduling</h3>
+        <button onClick={() => setScheduling(true)} className="text-xs font-display uppercase text-fairway">
           Schedule
         </button>
       </div>
       {linked.length === 0 ? (
-        <p className="text-sm text-parchment/40">Not scheduled yet.</p>
+        <p className="text-sm text-ink/40">Not scheduled yet.</p>
       ) : (
         <div className="space-y-1.5">
           {linked.map((event) => (
             <button
               key={event.id}
               onClick={() => navigate(`/calendar?event=${event.id}`)}
-              className="flex w-full items-center justify-between rounded-lg bg-fairway/50 px-3 py-2 text-left text-sm"
+              className="flex w-full items-center justify-between rounded-lg bg-black/[0.035] px-3 py-2 text-left text-sm"
             >
-              <span className="text-parchment">
+              <span className="text-ink">
                 {EVENT_TYPE_LABELS[event.type]}: {event.title}
               </span>
-              <span className="text-xs text-parchment/50">{friendlyDate(event.start)}</span>
+              <span className="text-xs text-ink/50">{friendlyDate(event.start)}</span>
             </button>
           ))}
         </div>

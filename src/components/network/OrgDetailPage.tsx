@@ -63,17 +63,17 @@ export default function OrgDetailPage() {
 
   return (
     <div className="px-4 py-4">
-      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-parchment/60">
+      <button onClick={() => navigate(-1)} className="mb-3 flex items-center gap-1 text-sm text-ink/60">
         <ArrowLeft size={16} /> Back
       </button>
 
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <h2 className="font-display text-xl text-parchment">{org.name}</h2>
-          <p className="text-sm text-parchment/50">{ORG_CATEGORY_LABELS[org.category]}</p>
+          <h2 className="font-display text-xl text-ink">{org.name}</h2>
+          <p className="text-sm text-ink/50">{ORG_CATEGORY_LABELS[org.category]}</p>
         </div>
         <button onClick={toggleWantToTalkTo} aria-label="Star for want-to-talk-to list">
-          <Star size={20} className={org.wantToTalkTo ? "fill-gold text-gold" : "text-parchment/30"} />
+          <Star size={20} className={org.wantToTalkTo ? "fill-gold text-gold" : "text-ink/30"} />
         </button>
       </div>
 
@@ -86,20 +86,20 @@ export default function OrgDetailPage() {
       </div>
 
       {owner && (
-        <p className="mb-4 flex items-center gap-1.5 text-xs text-parchment/50">
+        <p className="mb-4 flex items-center gap-1.5 text-xs text-ink/50">
           <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" /> Owned by {owner.name}
         </p>
       )}
 
       {orgPeople.length > 0 && (
         <section className="mb-5">
-          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">People</h3>
+          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">People</h3>
           <div className="flex flex-wrap gap-2">
             {orgPeople.map((p) => (
               <button
                 key={p.id}
                 onClick={() => navigate(`/network/people/${p.id}`)}
-                className="rounded-full bg-fairway/60 px-3 py-1 text-xs text-parchment"
+                className="rounded-full bg-black/[0.045] px-3 py-1 text-xs text-ink"
               >
                 {p.name}
               </button>
@@ -110,7 +110,7 @@ export default function OrgDetailPage() {
 
       {(linkedIdeas.length > 0 || linkedEvents.length > 0) && (
         <section className="mb-5">
-          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
+          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
             Linked
           </h3>
           <div className="space-y-1.5">
@@ -118,7 +118,7 @@ export default function OrgDetailPage() {
               <button
                 key={idea.id}
                 onClick={() => navigate(`/ideas/${idea.id}`)}
-                className="block w-full rounded-lg bg-fairway/50 px-3 py-2 text-left text-sm text-parchment"
+                className="block w-full rounded-lg bg-black/[0.035] px-3 py-2 text-left text-sm text-ink"
               >
                 💡 {idea.title}
               </button>
@@ -127,9 +127,9 @@ export default function OrgDetailPage() {
               <button
                 key={event.id}
                 onClick={() => navigate(`/calendar?event=${event.id}`)}
-                className="flex w-full items-center justify-between rounded-lg bg-fairway/50 px-3 py-2 text-left text-sm text-parchment"
+                className="flex w-full items-center justify-between rounded-lg bg-black/[0.035] px-3 py-2 text-left text-sm text-ink"
               >
-                {event.title} <span className="text-xs text-parchment/50">{shortDate(event.start)}</span>
+                {event.title} <span className="text-xs text-ink/50">{shortDate(event.start)}</span>
               </button>
             ))}
           </div>
@@ -138,8 +138,8 @@ export default function OrgDetailPage() {
 
       {isAdmin && (
         <section className="mb-5">
-          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-parchment/60">
-            Deal notes <span className="text-parchment/30">(Admin only)</span>
+          <h3 className="double-rule mb-2 font-display text-xs uppercase tracking-widest text-ink/60">
+            Deal notes <span className="text-ink/30">(Admin only)</span>
           </h3>
           <Field label="Deliverables agreed">
             <TextArea
@@ -155,26 +155,26 @@ export default function OrgDetailPage() {
 
       <section>
         <div className="mb-2 flex items-center justify-between">
-          <h3 className="font-display text-xs uppercase tracking-widest text-parchment/60">Interactions</h3>
-          <button onClick={() => setLoggingInteraction(true)} className="text-xs font-display uppercase text-gold">
+          <h3 className="font-display text-xs uppercase tracking-widest text-ink/60">Interactions</h3>
+          <button onClick={() => setLoggingInteraction(true)} className="text-xs font-display uppercase text-fairway">
             + Log
           </button>
         </div>
         {orgInteractions.length === 0 ? (
-          <p className="text-sm text-parchment/40">No interactions logged yet.</p>
+          <p className="text-sm text-ink/40">No interactions logged yet.</p>
         ) : (
           <div className="space-y-2">
             {orgInteractions.map((i) => (
-              <div key={i.id} className="rounded-lg bg-fairway/40 px-3 py-2.5">
+              <div key={i.id} className="rounded-lg bg-black/[0.03] px-3 py-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-wide text-parchment/50">
+                  <span className="text-xs uppercase tracking-wide text-ink/50">
                     {INTERACTION_TYPE_LABELS[i.type]}
                   </span>
-                  <span className="text-[11px] text-parchment/40">{friendlyDate(i.date)}</span>
+                  <span className="text-[11px] text-ink/40">{friendlyDate(i.date)}</span>
                 </div>
-                <p className="mt-1 text-sm text-parchment">{i.summary}</p>
+                <p className="mt-1 text-sm text-ink">{i.summary}</p>
                 {i.nextStep && (
-                  <p className="mt-1 text-xs text-gold">
+                  <p className="mt-1 text-xs text-fairway">
                     Next: {i.nextStep} {i.nextStepDate && `· ${shortDate(i.nextStepDate)}`}
                   </p>
                 )}

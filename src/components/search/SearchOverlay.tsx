@@ -43,24 +43,24 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-dark-green safe-top safe-bottom">
-      <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
-        <Search size={18} className="text-parchment/50" />
+    <div className="fixed inset-0 z-50 flex flex-col bg-white safe-top safe-bottom">
+      <div className="flex items-center gap-3 border-b border-black/10 px-4 py-3">
+        <Search size={18} className="text-ink/50" />
         <input
           autoFocus
           value={term}
           onChange={(e) => setTerm(e.target.value)}
           placeholder="Search ideas, events, contacts…"
-          className="flex-1 bg-transparent text-sm text-parchment placeholder:text-parchment/40 focus:outline-none"
+          className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink/40 focus:outline-none"
         />
-        <button onClick={onClose} aria-label="Close search" className="text-parchment/60">
+        <button onClick={onClose} aria-label="Close search" className="text-ink/60">
           <X size={20} />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        {!t && <p className="text-center text-sm text-parchment/40">Start typing to search.</p>}
-        {noResults && <p className="text-center text-sm text-parchment/40">No matches for "{term}".</p>}
+        {!t && <p className="text-center text-sm text-ink/40">Start typing to search.</p>}
+        {noResults && <p className="text-center text-sm text-ink/40">No matches for "{term}".</p>}
 
         {ideaResults.length > 0 && (
           <ResultSection title="Ideas">
@@ -68,7 +68,7 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
               <button
                 key={idea.id}
                 onClick={() => go(`/ideas/${idea.id}`)}
-                className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm text-parchment active:bg-white/10"
+                className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm text-ink active:bg-black/[0.04]"
               >
                 <span className="truncate">{idea.title}</span>
                 <div className="flex gap-1">{idea.formats.slice(0, 2).map((f) => <FormatChip key={f} format={f} />)}</div>
@@ -83,10 +83,10 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
               <button
                 key={event.id}
                 onClick={() => go(`/calendar?event=${event.id}`)}
-                className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm text-parchment active:bg-white/10"
+                className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm text-ink active:bg-black/[0.04]"
               >
                 <span className="truncate">{event.title}</span>
-                <span className="text-xs text-parchment/50">{shortDate(event.start)}</span>
+                <span className="text-xs text-ink/50">{shortDate(event.start)}</span>
               </button>
             ))}
           </ResultSection>
@@ -98,7 +98,7 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
               <button
                 key={org.id}
                 onClick={() => go(`/network/orgs/${org.id}`)}
-                className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-parchment active:bg-white/10"
+                className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-ink active:bg-black/[0.04]"
               >
                 {org.name}
               </button>
@@ -112,7 +112,7 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
               <button
                 key={person.id}
                 onClick={() => go(`/network/people/${person.id}`)}
-                className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-parchment active:bg-white/10"
+                className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-ink active:bg-black/[0.04]"
               >
                 {person.name}
               </button>
@@ -127,7 +127,7 @@ export default function SearchOverlay({ onClose }: { onClose: () => void }) {
 function ResultSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mb-4">
-      <p className="mb-1 px-3 font-display text-[11px] uppercase tracking-widest text-parchment/40">
+      <p className="mb-1 px-3 font-display text-[11px] uppercase tracking-widest text-ink/40">
         {title}
       </p>
       {children}

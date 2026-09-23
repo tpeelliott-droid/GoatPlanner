@@ -43,12 +43,12 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
     return (
       <section className="mb-5">
         <div className="flex items-center justify-between">
-          <h3 className="font-display text-xs uppercase tracking-widest text-parchment/60">People</h3>
+          <h3 className="font-display text-xs uppercase tracking-widest text-ink/60">People</h3>
           <div className="flex gap-3">
-            <button onClick={() => setPicking("org")} className="text-xs font-display uppercase text-gold">
+            <button onClick={() => setPicking("org")} className="text-xs font-display uppercase text-fairway">
               + Partner
             </button>
-            <button onClick={() => setPicking("person")} className="text-xs font-display uppercase text-gold">
+            <button onClick={() => setPicking("person")} className="text-xs font-display uppercase text-fairway">
               + Person
             </button>
           </div>
@@ -60,12 +60,12 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
   return (
     <section className="mb-5">
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="font-display text-xs uppercase tracking-widest text-parchment/60">People</h3>
+        <h3 className="font-display text-xs uppercase tracking-widest text-ink/60">People</h3>
         <div className="flex gap-3">
-          <button onClick={() => setPicking("org")} className="text-xs font-display uppercase text-gold">
+          <button onClick={() => setPicking("org")} className="text-xs font-display uppercase text-fairway">
             + Partner
           </button>
-          <button onClick={() => setPicking("person")} className="text-xs font-display uppercase text-gold">
+          <button onClick={() => setPicking("person")} className="text-xs font-display uppercase text-fairway">
             + Person
           </button>
         </div>
@@ -76,7 +76,7 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
           <button
             key={org.id}
             onClick={() => navigate(`/network/orgs/${org.id}`)}
-            className="rounded-full bg-fairway/60 px-3 py-1 text-xs text-parchment"
+            className="rounded-full bg-black/[0.045] px-3 py-1 text-xs text-ink"
           >
             {org.name}
           </button>
@@ -85,7 +85,7 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
           <button
             key={person.id}
             onClick={() => navigate(`/network/people/${person.id}`)}
-            className="rounded-full bg-fairway/60 px-3 py-1 text-xs text-parchment"
+            className="rounded-full bg-black/[0.045] px-3 py-1 text-xs text-ink"
           >
             {person.name}
           </button>
@@ -101,7 +101,7 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
               <button
                 key={o.id}
                 onClick={() => addOrg(o.id)}
-                className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-parchment/70 active:bg-white/5"
+                className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-ink/70 active:bg-black/[0.04]"
               >
                 {o.name}
               </button>
@@ -117,7 +117,7 @@ export default function IdeaPeople({ idea }: { idea: Idea }) {
               <button
                 key={p.id}
                 onClick={() => addPerson(p.id)}
-                className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-parchment/70 active:bg-white/5"
+                className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-ink/70 active:bg-black/[0.04]"
               >
                 {p.name}
               </button>
