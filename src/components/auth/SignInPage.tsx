@@ -51,7 +51,7 @@ export default function SignInPage() {
   if (completingLink) {
     return (
       <div className="flex h-dvh flex-col items-center justify-center gap-4 bg-dark-green px-6 text-center">
-        <img src="/icons/goat-mark.svg" alt="" className="h-16 w-16 animate-pulse" />
+        <img src="/icons/goat-logo.png" alt="" className="h-16 w-16 animate-pulse rounded-2xl" />
         <p className="font-display text-sm uppercase tracking-widest text-parchment/70">
           Signing you in…
         </p>
@@ -62,7 +62,7 @@ export default function SignInPage() {
   return (
     <div className="flex h-dvh flex-col items-center justify-center gap-8 bg-dark-green px-6 text-center safe-top safe-bottom">
       <div className="flex flex-col items-center gap-4">
-        <img src="/icons/goat-mark.svg" alt="Goat Track Planner" className="h-20 w-20 rounded-2xl" />
+        <img src="/icons/goat-logo.png" alt="Goat Track Planner" className="h-20 w-20 rounded-2xl" />
         <h1 className="font-display text-2xl uppercase tracking-widest text-parchment">
           Goat Track Planner
         </h1>
