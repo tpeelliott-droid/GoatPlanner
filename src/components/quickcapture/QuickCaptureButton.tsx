@@ -17,16 +17,16 @@ export default function QuickCaptureButton() {
       <button
         onClick={() => setPanel("menu")}
         aria-label="Quick capture"
-        className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-gold text-dark-green shadow-lg shadow-black/30 transition active:scale-95"
+        className="fixed bottom-5 left-1/2 z-50 flex h-16 w-16 -translate-x-1/2 items-center justify-center rounded-full bg-gold text-dark-green shadow-lg shadow-black/40 transition active:scale-95"
       >
-        <Plus size={26} strokeWidth={2.5} />
+        <Plus size={28} strokeWidth={2.5} />
       </button>
 
       {panel === "menu" && (
-        <div className="fixed inset-0 z-40 flex flex-col justify-end bg-black/50" onClick={() => setPanel(null)}>
+        <div className="fixed inset-0 z-50 flex flex-col justify-end bg-black/50" onClick={() => setPanel(null)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="mb-24 mr-4 ml-auto flex w-56 flex-col overflow-hidden rounded-2xl border border-white/10 bg-fairway safe-bottom"
+            className="mx-auto mb-28 flex w-56 flex-col overflow-hidden rounded-2xl border border-white/10 bg-fairway safe-bottom"
           >
             <MenuItem icon={Lightbulb} label="New idea" onClick={() => setPanel("idea")} />
             <MenuItem icon={CalendarPlus} label="New event" onClick={() => setPanel("event")} />

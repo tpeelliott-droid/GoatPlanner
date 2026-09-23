@@ -10,7 +10,6 @@ import EntryFeed from "./EntryFeed";
 import FormatAngles from "./FormatAngles";
 import IdeaScheduling from "./IdeaScheduling";
 import IdeaPeople from "./IdeaPeople";
-import IdeaActivity from "./IdeaActivity";
 import { toggleUpvote, updateIdea, useIdea } from "../../hooks/useIdeas";
 import { useUsers, useUserMap } from "../../hooks/useUsers";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -130,7 +129,6 @@ export default function IdeaDetailPage() {
       <IdeaScheduling idea={idea} />
       <EntryFeed ideaId={idea.id} />
       <IdeaPeople idea={idea} />
-      <IdeaActivity ideaId={idea.id} />
 
       {idea.status !== "parked" && (
         <button

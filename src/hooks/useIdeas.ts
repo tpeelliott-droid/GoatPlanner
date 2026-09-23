@@ -5,6 +5,7 @@ import {
   arrayUnion,
   deleteDoc,
   doc,
+  getDocs,
   increment,
   orderBy,
   query,
@@ -13,9 +14,36 @@ import {
   where,
 } from "firebase/firestore";
 import { useFirestoreCollection } from "./useFirestoreCollection";
-import { ideaEntriesCol, ideasCol } from "../firebase/collections";
+import { ideaEntriesCol, ideasCol, tasksCol } from "../firebase/collections";
 import { logActivity } from "../firebase/activity";
+import { completeTask, createTask, reopenTask } from "./useTasks";
 import type { Format, Idea, IdeaEntry, IdeaStatus } from "../types";
+
+const IDEA_DONE_STATUSES: IdeaStatus[] = ["published", "parked"];
+
+/** Closes any open task linked to this idea (idea marked done/cancelled). */
+async function closeLinkedTasks(ideaId: string, completedBy: string) {
+  const q = query(
+    tasksCol(),
+    where("linkedType", "==", "idea"),
+    where("linkedId", "==", ideaId),
+    where("status", "==", "open"),
+  );
+  const snap = await getDocs(q);
+  await Promise.all(snap.docs.map((d) => completeTask(d.id, completedBy)));
+}
+
+/** Reopens any completed task linked to this idea (idea un-cancelled/un-published). */
+async function reopenLinkedTasks(ideaId: string) {
+  const q = query(
+    tasksCol(),
+    where("linkedType", "==", "idea"),
+    where("linkedId", "==", ideaId),
+    where("status", "==", "done"),
+  );
+  const snap = await getDocs(q);
+  await Promise.all(snap.docs.map((d) => reopenTask(d.id)));
+}
 
 export function useIdeas() {
   const q = useMemo(
@@ -72,6 +100,14 @@ export async function createIdea(input: NewIdeaInput, actor: { id: string; initi
     authorId: actor.id,
     authorInitials: actor.initials,
   });
+  // Every new idea shows up under Tasks until it's published or parked.
+  await createTask({
+    title: input.title,
+    assigneeId: input.ownerId,
+    creatorId: actor.id,
+    linkedType: "idea",
+    linkedId: ref.id,
+  });
   return ref.id;
 }
 
@@ -91,6 +127,13 @@ export async function updateIdea(
     authorId: actor.id,
     authorInitials: actor.initials,
   });
+  if (data.status) {
+    if (IDEA_DONE_STATUSES.includes(data.status)) {
+      await closeLinkedTasks(id, actor.id);
+    } else {
+      await reopenLinkedTasks(id);
+    }
+  }
 }
 
 export async function toggleUpvote(idea: Idea, userId: string) {

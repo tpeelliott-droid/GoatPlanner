@@ -9,13 +9,12 @@ import InitialsChip from "../common/InitialsChip";
 import StatusPill from "../common/StatusPill";
 import WelcomeQuoteCard from "../welcome/WelcomeQuoteCard";
 import { useAuthStore } from "../../store/useAuthStore";
-import { useTasks, claimTask, completeTask } from "../../hooks/useTasks";
+import { useTasks, completeTask } from "../../hooks/useTasks";
 import { useEvents } from "../../hooks/useEvents";
 import { useIdeas } from "../../hooks/useIdeas";
 import { useInteractions, useOrgs, usePeople } from "../../hooks/useNetwork";
 import { useUsers, useUserMap } from "../../hooks/useUsers";
-import { useRecentActivity } from "../../hooks/useActivity";
-import { friendlyDate, isOverdue, relativeTime } from "../../utils/dates";
+import { friendlyDate, isOverdue } from "../../utils/dates";
 import { shouldShowWelcome, markWelcomeShown } from "../../utils/welcome";
 import type { CalendarEvent, Task } from "../../types";
 import { EVENT_TYPE_LABELS } from "../../types";
@@ -34,7 +33,6 @@ export default function HomeDashboard() {
   const { data: people } = usePeople();
   const { data: interactions } = useInteractions();
   const { data: users } = useUsers();
-  const { data: activity } = useRecentActivity(10);
   const userMap = useUserMap(users);
 
   const myOpenTasks = useMemo(() => {
@@ -45,8 +43,6 @@ export default function HomeDashboard() {
       return aTime - bTime;
     });
   }, [tasks, profile]);
-
-  const upForGrabs = useMemo(() => tasks.filter((t) => !t.assigneeId && t.status === "open"), [tasks]);
 
   const upcomingEvents = useMemo(() => {
     const now = new Date();
@@ -116,15 +112,15 @@ export default function HomeDashboard() {
         </h2>
       </div>
 
-      <section>
-        <div className="mb-2 flex items-center justify-between">
+      <section className="rounded-2xl border-2 border-fairway/50 bg-fairway/[0.05] p-3">
+        <div className="mb-2 flex items-center justify-between px-1">
           <SectionTitle>To do</SectionTitle>
           <button onClick={() => navigate("/my-list")} className="text-xs font-display uppercase text-fairway">
             Full list
           </button>
         </div>
         {myOpenTasks.length === 0 ? (
-          <EmptyState title="Nothing on your list" hint="Claim work below, or add your own from My List." />
+          <EmptyState title="Nothing on your list" hint="Add your own from My List, or capture a new idea." />
         ) : (
           <div className="space-y-2">
             {myOpenTasks.map((task) => (
@@ -157,8 +153,8 @@ export default function HomeDashboard() {
         )}
       </section>
 
-      <section>
-        <div className="mb-2 flex items-center justify-between">
+      <section className="rounded-2xl border-2 border-format-instagram/50 bg-format-instagram/[0.05] p-3">
+        <div className="mb-2 flex items-center justify-between px-1">
           <SectionTitle>Content calendar</SectionTitle>
           <button onClick={() => navigate("/calendar")} className="text-xs font-display uppercase text-fairway">
             Full calendar
@@ -167,7 +163,7 @@ export default function HomeDashboard() {
         {calendarGroups.length === 0 ? (
           <EmptyState title="Nothing scheduled yet" hint="Add a recording or event from the Calendar tab." />
         ) : (
-          <Card accent="blue" className="!p-0">
+          <Card className="!p-0">
             <div className="divide-y divide-black/5">
               {calendarGroups.map(([key, dayEvents]) => (
                 <div key={key} className="px-4 py-3">
@@ -209,32 +205,6 @@ export default function HomeDashboard() {
         )}
       </section>
 
-      <section>
-        <SectionTitle>Up for grabs</SectionTitle>
-        {upForGrabs.length === 0 ? (
-          <EmptyState title="No unclaimed work right now" />
-        ) : (
-          <div className="space-y-2">
-            {upForGrabs.slice(0, 5).map((task) => (
-              <Card key={task.id} accent="sage">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm text-ink">{task.title}</p>
-                    {task.linkedLabel && <p className="truncate text-xs text-ink/50">{task.linkedLabel}</p>}
-                  </div>
-                  <button
-                    onClick={() => profile && claimTask(task.id, profile.id)}
-                    className="flex-none rounded-full bg-gold px-3 py-1.5 text-xs font-display uppercase text-dark-green"
-                  >
-                    I'll do this
-                  </button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </section>
-
       {(needsAttention.approvedNoDate.length > 0 || needsAttention.overduePartnerSteps.length > 0) && (
         <section>
           <SectionTitle>Needs attention</SectionTitle>
@@ -254,27 +224,6 @@ export default function HomeDashboard() {
           </div>
         </section>
       )}
-
-      <section>
-        <SectionTitle>Recent activity</SectionTitle>
-        {activity.length === 0 ? (
-          <EmptyState title="Nothing's happened yet" />
-        ) : (
-          <Card>
-            <ul className="divide-y divide-black/5">
-              {activity.map((a) => (
-                <li key={a.id} className="flex items-center gap-2 py-2">
-                  <InitialsChip initials={a.authorInitials} size="xs" />
-                  <p className="min-w-0 flex-1 truncate text-xs text-ink/60">
-                    <span className="text-ink">{a.entityLabel}</span> — {a.action}
-                  </p>
-                  <span className="flex-none text-[10px] text-ink/35">{relativeTime(a.createdAt)}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        )}
-      </section>
     </div>
   );
 }
