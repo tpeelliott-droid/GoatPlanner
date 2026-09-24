@@ -1,3 +1,5 @@
+import { readableTextColor } from "../../utils/contrast";
+
 export default function InitialsChip({
   initials,
   colour = "#285E53",
@@ -18,8 +20,8 @@ export default function InitialsChip({
   return (
     <span
       title={title ?? initials}
-      className={`inline-flex flex-none items-center justify-center rounded-full font-display font-semibold text-dark-green ${sizeClasses}`}
-      style={{ backgroundColor: colour }}
+      className={`inline-flex flex-none items-center justify-center rounded-full font-display font-semibold ${sizeClasses}`}
+      style={{ backgroundColor: colour, color: readableTextColor(colour) }}
     >
       {initials}
     </span>
