@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { format } from "date-fns";
 import Sheet from "../common/Sheet";
 import Button from "../common/Button";
 import { Field, TextArea, TextInput } from "../common/FormField";
 import FormatTicks from "../common/FormatTicks";
-import { createIdea } from "../../hooks/useIdeas";
+import { createIdea, useIdeas } from "../../hooks/useIdeas";
 import { useAuthStore } from "../../store/useAuthStore";
 import type { Format } from "../../types";
+
+function currentMonthKey() {
+  return format(new Date(), "yyyy-MM");
+}
+
+function monthLabel(monthKey: string) {
+  return format(new Date(`${monthKey}-01T00:00:00`), "MMMM yyyy");
+}
 
 export default function NewIdeaSheet({
   onClose,
@@ -15,11 +24,22 @@ export default function NewIdeaSheet({
   onCreated: (id: string) => void;
 }) {
   const profile = useAuthStore((s) => s.profile);
+  const { data: ideas } = useIdeas();
   const [title, setTitle] = useState("");
   const [pitch, setPitch] = useState("");
   const [formats, setFormats] = useState<Format[]>([]);
+  const [monthKey, setMonthKey] = useState(currentMonthKey());
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isMailer = formats.includes("article");
+
+  const existingMailerForMonth = useMemo(() => {
+    if (!isMailer) return undefined;
+    return ideas.find(
+      (i) => i.formats.includes("article") && i.monthKey === monthKey && i.status !== "parked",
+    );
+  }, [ideas, isMailer, monthKey]);
 
   async function handleSave() {
     if (!profile) return;
@@ -34,7 +54,13 @@ export default function NewIdeaSheet({
     setSaving(true);
     try {
       const id = await createIdea(
-        { title: title.trim(), pitch: pitch.trim(), formats, ownerId: profile.id },
+        {
+          title: title.trim(),
+          pitch: pitch.trim(),
+          formats,
+          ownerId: profile.id,
+          monthKey: isMailer ? monthKey : undefined,
+        },
         { id: profile.id, initials: profile.initials },
       );
       onCreated(id);
@@ -58,6 +84,17 @@ export default function NewIdeaSheet({
       <Field label="Formats">
         <FormatTicks value={formats} onChange={setFormats} />
       </Field>
+      {isMailer && (
+        <Field label="Mailer month">
+          <TextInput type="month" value={monthKey} onChange={(e) => setMonthKey(e.target.value)} />
+        </Field>
+      )}
+      {existingMailerForMonth && (
+        <p className="mb-3 text-xs text-rust">
+          "{existingMailerForMonth.title}" is already the {monthLabel(monthKey)} mailer — saving will
+          add a second one.
+        </p>
+      )}
       <Field label="One-line pitch (optional)">
         <TextArea
           rows={2}

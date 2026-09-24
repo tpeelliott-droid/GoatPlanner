@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { format as formatDate } from "date-fns";
 import { ArrowLeft, ArrowUp, Trash2 } from "lucide-react";
 import FormatTicks from "../common/FormatTicks";
 import InitialsChip from "../common/InitialsChip";
@@ -8,6 +9,7 @@ import Button from "../common/Button";
 import { TextArea, TextInput } from "../common/FormField";
 import EntryFeed from "./EntryFeed";
 import FormatAngles from "./FormatAngles";
+import MailerArticles from "./MailerArticles";
 import IdeaScheduling from "./IdeaScheduling";
 import IdeaPeople from "./IdeaPeople";
 import { toggleUpvote, updateIdea, useIdea } from "../../hooks/useIdeas";
@@ -89,6 +91,11 @@ export default function IdeaDetailPage() {
         ) : (
           <button className="text-left" onClick={() => setEditingTitle(true)}>
             <h2 className="font-display text-xl text-dark-green">{idea.title}</h2>
+            {idea.monthKey && (
+              <p className="mt-0.5 text-xs uppercase tracking-wide text-ink/40">
+                {formatDate(new Date(`${idea.monthKey}-01T00:00:00`), "MMMM yyyy")} mailer
+              </p>
+            )}
             {idea.pitch && <p className="mt-1 text-sm text-ink/60">{idea.pitch}</p>}
           </button>
         )}
@@ -125,6 +132,7 @@ export default function IdeaDetailPage() {
         </button>
       </div>
 
+      {idea.formats.includes("article") && <MailerArticles idea={idea} />}
       <FormatAngles idea={idea} />
       <IdeaScheduling idea={idea} />
       <EntryFeed ideaId={idea.id} />

@@ -74,6 +74,7 @@ export interface NewIdeaInput {
   tags?: string[];
   priority?: "normal" | "high";
   ownerId: string;
+  monthKey?: string;
 }
 
 export async function createIdea(input: NewIdeaInput, actor: { id: string; initials: string }) {
@@ -88,6 +89,7 @@ export async function createIdea(input: NewIdeaInput, actor: { id: string; initi
     ownerId: input.ownerId,
     upvotes: [],
     entryCount: 0,
+    monthKey: input.monthKey ?? null,
     deletedAt: null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),

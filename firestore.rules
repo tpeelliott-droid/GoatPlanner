@@ -58,6 +58,15 @@ service cloud.firestore {
         allow update, delete: if isTeamMember() &&
           (resource.data.authorId == request.auth.uid || isAdmin());
       }
+
+      // Mailer sub-items — any team member can reassign or mark done, not just the author.
+      match /articles/{articleId} {
+        allow read: if isTeamMember();
+        allow create: if isTeamMember() && request.resource.data.authorId == request.auth.uid;
+        allow update: if isTeamMember();
+        allow delete: if isTeamMember() &&
+          (resource.data.authorId == request.auth.uid || isAdmin());
+      }
     }
 
     // ---- events ----

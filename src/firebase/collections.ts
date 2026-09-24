@@ -8,6 +8,7 @@ import {
 import { db } from "./config";
 import type {
   ActivityLogEntry,
+  Article,
   CalendarEvent,
   ContentItem,
   Idea,
@@ -41,6 +42,8 @@ export const invitesCol = () => typedCollection<Invite>("invites");
 export const ideasCol = () => typedCollection<Idea>("ideas");
 export const ideaEntriesCol = (ideaId: string) =>
   typedCollection<IdeaEntry>(`ideas/${ideaId}/entries`);
+export const articlesCol = (ideaId: string) =>
+  typedCollection<Article>(`ideas/${ideaId}/articles`);
 export const eventsCol = () => typedCollection<CalendarEvent>("events");
 export const contentItemsCol = () => typedCollection<ContentItem>("contentItems");
 export const orgsCol = () => typedCollection<Org>("orgs");

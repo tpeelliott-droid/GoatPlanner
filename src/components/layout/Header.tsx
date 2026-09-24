@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { ListChecks, Search } from "lucide-react";
 import InitialsChip from "../common/InitialsChip";
 import { useAuthStore } from "../../store/useAuthStore";
 import SearchOverlay from "../search/SearchOverlay";
@@ -33,6 +33,13 @@ export default function Header() {
           {titleFor(pathname)}
         </h1>
         <div className="flex items-center gap-3">
+          <button
+            aria-label="My List"
+            onClick={() => navigate("/my-list")}
+            className="rounded-full p-2 text-ink/60 transition active:bg-black/5"
+          >
+            <ListChecks size={20} />
+          </button>
           <button
             aria-label="Search"
             onClick={() => setSearchOpen(true)}

@@ -21,8 +21,11 @@ function placeholderFor(format: Format) {
 
 export default function FormatAngles({ idea }: { idea: Idea }) {
   const profile = useAuthStore((s) => s.profile);
+  // Mailer ideas track their content via the Articles list instead of a
+  // single angle blurb — see MailerArticles.
+  const formats = idea.formats.filter((f) => f !== "article");
 
-  if (idea.formats.length === 0) return null;
+  if (formats.length === 0) return null;
 
   async function save(format: string, value: string) {
     if (!profile) return;
@@ -41,7 +44,7 @@ export default function FormatAngles({ idea }: { idea: Idea }) {
         Format details
       </h3>
       <div className="space-y-2">
-        {idea.formats.map((format) => (
+        {formats.map((format) => (
           <div key={format}>
             <p className="mb-1 text-xs text-ink/50">{labelFor(format)}</p>
             <TextArea

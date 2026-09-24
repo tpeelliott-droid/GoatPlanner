@@ -4,11 +4,14 @@ export type Format = "podcast" | "video" | "article" | "instagram";
 
 export const FORMATS: Format[] = ["podcast", "video", "article", "instagram"];
 
+// Stored values (podcast/video/article/instagram) are kept as-is for
+// backwards compatibility with existing Firestore documents — only the
+// display labels changed to match the team's actual vocabulary.
 export const FORMAT_LABELS: Record<Format, string> = {
   podcast: "Podcast",
-  video: "Video",
-  article: "Article",
-  instagram: "Instagram",
+  video: "Long Video",
+  article: "Mailer",
+  instagram: "Reels",
 };
 
 export type Role = "admin" | "contributor" | "guest";
@@ -58,6 +61,7 @@ export interface Idea {
   ownerId: string;
   upvotes: string[]; // user ids who upvoted
   entryCount: number; // denormalised count of notes/images/links/voice entries
+  monthKey?: string; // "YYYY-MM" — which month this Mailer (article-format idea) is for
   linkedOrgIds?: string[];
   linkedPersonIds?: string[];
   deletedAt: Timestamp | null;
@@ -76,6 +80,17 @@ export interface IdeaEntry {
   linkSite?: string;
   linkThumbnail?: string;
   format?: Format; // for per-format angle notes
+  authorId: string;
+  authorInitials: string;
+  createdAt: Timestamp | null;
+}
+
+/** A sub-item of a Mailer idea (format "article") — one article in that month's newsletter. */
+export interface Article {
+  id: string;
+  title: string;
+  assigneeId?: string;
+  status: "open" | "done";
   authorId: string;
   authorInitials: string;
   createdAt: Timestamp | null;
