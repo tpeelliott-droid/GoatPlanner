@@ -17,8 +17,6 @@ import { useUsers, useUserMap } from "../../hooks/useUsers";
 import { useAuthStore } from "../../store/useAuthStore";
 import { IDEA_STATUS_LABELS, type Format, type IdeaStatus } from "../../types";
 
-const STATUS_FLOW: IdeaStatus[] = ["new", "developing", "approved", "scheduled", "published"];
-
 export default function IdeaDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -105,14 +103,11 @@ export default function IdeaDetailPage() {
         <FormatTicks value={idea.formats} onChange={handleFormatsChange} />
       </div>
 
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        {STATUS_FLOW.map((s) => (
-          <button key={s} onClick={() => handleStatusChange(s)}>
-            <StatusPill label={IDEA_STATUS_LABELS[s]} tone={s === idea.status ? "progress" : "neutral"} />
-          </button>
-        ))}
-        {idea.status === "parked" && <StatusPill label="Parked" tone="parked" />}
-      </div>
+      {idea.status === "parked" && (
+        <div className="mb-4">
+          <StatusPill label="Parked" tone="parked" />
+        </div>
+      )}
 
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2">
