@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { format as formatDate } from "date-fns";
-import { ArrowLeft, ArrowUp, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowUp, Pencil, Trash2 } from "lucide-react";
 import FormatTicks from "../common/FormatTicks";
 import InitialsChip from "../common/InitialsChip";
+import AssigneePicker from "../common/AssigneePicker";
 import StatusPill from "../common/StatusPill";
 import Button from "../common/Button";
 import { TextArea, TextInput } from "../common/FormField";
@@ -28,6 +29,9 @@ export default function IdeaDetailPage() {
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(idea?.title ?? "");
   const [pitch, setPitch] = useState(idea?.pitch ?? "");
+  const [editingAssignees, setEditingAssignees] = useState(false);
+
+  const isAdmin = profile?.role === "admin";
 
   if (loading) return null;
   if (!idea) {
@@ -41,9 +45,14 @@ export default function IdeaDetailPage() {
     );
   }
 
-  const owner = userMap.get(idea.ownerId);
+  const assigneeIds = idea.assigneeIds?.length ? idea.assigneeIds : [idea.ownerId];
   const upvoted = profile ? idea.upvotes.includes(profile.id) : false;
   const actor = profile ? { id: profile.id, initials: profile.initials } : null;
+
+  async function handleAssigneesChange(ids: string[]) {
+    if (!actor || !idea) return;
+    await updateIdea(idea.id, { assigneeIds: ids }, actor, "changed the assignees", idea.title);
+  }
 
   async function saveHeader() {
     if (!actor) return;
@@ -110,11 +119,21 @@ export default function IdeaDetailPage() {
       )}
 
       <div className="mb-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {owner && (
-            <span className="flex items-center gap-1.5 text-xs text-ink/50">
-              <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" /> {owner.name}
-            </span>
+        <div className="flex items-center gap-1.5">
+          {assigneeIds.map((id) => {
+            const u = userMap.get(id);
+            return u ? (
+              <InitialsChip key={id} initials={u.initials} colour={u.colour} size="xs" title={u.name} />
+            ) : null;
+          })}
+          {isAdmin && (
+            <button
+              onClick={() => setEditingAssignees((v) => !v)}
+              aria-label="Edit assignees"
+              className="text-ink/30"
+            >
+              <Pencil size={12} />
+            </button>
           )}
         </div>
         <button
@@ -126,6 +145,12 @@ export default function IdeaDetailPage() {
           <ArrowUp size={12} /> {idea.upvotes.length}
         </button>
       </div>
+
+      {isAdmin && editingAssignees && (
+        <div className="mb-5">
+          <AssigneePicker users={users} value={assigneeIds} onChange={handleAssigneesChange} />
+        </div>
+      )}
 
       {idea.formats.includes("article") && <MailerArticles idea={idea} />}
       <FormatAngles idea={idea} />

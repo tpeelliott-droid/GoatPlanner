@@ -59,6 +59,7 @@ export interface Idea {
   tags: string[];
   priority: "normal" | "high";
   ownerId: string;
+  assigneeIds: string[]; // team members this idea is assigned to — admin-editable
   upvotes: string[]; // user ids who upvoted
   entryCount: number; // denormalised count of notes/images/links/voice entries
   monthKey?: string; // "YYYY-MM" — which month this Mailer (article-format idea) is for
@@ -303,7 +304,7 @@ export type LinkedItemType = "idea" | "event" | "contentItem" | "org" | "person"
 export interface Task {
   id: string;
   title: string;
-  assigneeId?: string;
+  assigneeIds: string[]; // team members this task is assigned to — admin-editable
   creatorId: string;
   dueDate?: Timestamp;
   priority: "normal" | "high";

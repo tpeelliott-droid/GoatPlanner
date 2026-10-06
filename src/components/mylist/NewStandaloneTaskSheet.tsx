@@ -17,7 +17,7 @@ export default function NewStandaloneTaskSheet({ onClose }: { onClose: () => voi
     try {
       await createTask({
         title: title.trim(),
-        assigneeId: profile.id,
+        assigneeIds: [profile.id],
         dueDate: dueDate ? new Date(dueDate) : undefined,
         creatorId: profile.id,
       });

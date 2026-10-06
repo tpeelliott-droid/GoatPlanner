@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import {
   addDoc,
+  arrayUnion,
   doc,
   orderBy,
   query,
@@ -24,7 +25,7 @@ export function useTasks() {
 
 export interface NewTaskInput {
   title: string;
-  assigneeId?: string;
+  assigneeIds?: string[];
   dueDate?: Date;
   priority?: "normal" | "high";
   linkedType?: LinkedItemType;
@@ -37,7 +38,7 @@ export interface NewTaskInput {
 export async function createTask(input: NewTaskInput) {
   await addDoc(tasksCol(), {
     title: input.title,
-    assigneeId: input.assigneeId ?? null,
+    assigneeIds: input.assigneeIds ?? [],
     creatorId: input.creatorId,
     dueDate: input.dueDate ? Timestamp.fromDate(input.dueDate) : null,
     priority: input.priority ?? "normal",
@@ -55,11 +56,12 @@ export async function createTask(input: NewTaskInput) {
 }
 
 export async function claimTask(taskId: string, userId: string) {
-  await updateDoc(doc(tasksCol(), taskId), { assigneeId: userId, updatedAt: serverTimestamp() });
+  await updateDoc(doc(tasksCol(), taskId), { assigneeIds: arrayUnion(userId), updatedAt: serverTimestamp() });
 }
 
-export async function reassignTask(taskId: string, userId: string | null) {
-  await updateDoc(doc(tasksCol(), taskId), { assigneeId: userId, updatedAt: serverTimestamp() });
+/** Replaces the full assignee set — an admin-only action in the UI. */
+export async function setTaskAssignees(taskId: string, userIds: string[]) {
+  await updateDoc(doc(tasksCol(), taskId), { assigneeIds: userIds, updatedAt: serverTimestamp() });
 }
 
 export async function completeTask(taskId: string, userId: string) {

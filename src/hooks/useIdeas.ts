@@ -87,6 +87,7 @@ export async function createIdea(input: NewIdeaInput, actor: { id: string; initi
     tags: input.tags ?? [],
     priority: input.priority ?? "normal",
     ownerId: input.ownerId,
+    assigneeIds: [input.ownerId],
     upvotes: [],
     entryCount: 0,
     monthKey: input.monthKey ?? null,
@@ -105,7 +106,7 @@ export async function createIdea(input: NewIdeaInput, actor: { id: string; initi
   // Every new idea shows up under Tasks until it's published or parked.
   await createTask({
     title: input.title,
-    assigneeId: input.ownerId,
+    assigneeIds: [input.ownerId],
     creatorId: actor.id,
     linkedType: "idea",
     linkedId: ref.id,

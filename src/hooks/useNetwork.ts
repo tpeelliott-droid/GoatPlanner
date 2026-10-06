@@ -156,7 +156,7 @@ export async function createInteraction(
   if (input.nextStep && input.nextStepDate) {
     await createTask({
       title: input.nextStep,
-      assigneeId: ownerId,
+      assigneeIds: [ownerId],
       dueDate: input.nextStepDate,
       linkedType: input.parentType,
       linkedId: input.parentId,

@@ -1,17 +1,19 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addDays } from "date-fns";
-import { Check, Clock, UserPlus } from "lucide-react";
+import { Check, Clock, Pencil, UserPlus } from "lucide-react";
 import Card from "../common/Card";
 import EmptyState from "../common/EmptyState";
 import StatusPill from "../common/StatusPill";
+import InitialsChip from "../common/InitialsChip";
+import AssigneePicker from "../common/AssigneePicker";
 import { useAuthStore } from "../../store/useAuthStore";
-import { useUsers } from "../../hooks/useUsers";
+import { useUsers, useUserMap } from "../../hooks/useUsers";
 import {
   claimTask,
   completeTask,
-  reassignTask,
   reopenTask,
+  setTaskAssignees,
   snoozeTask,
   useTasks,
 } from "../../hooks/useTasks";
@@ -35,10 +37,16 @@ export default function MyListPage() {
   const navigate = useNavigate();
   const { data: tasks } = useTasks();
   const { data: users } = useUsers();
+  const userMap = useUserMap(users);
+  const isAdmin = profile?.role === "admin";
   const [showDone, setShowDone] = useState(false);
   const [newTaskOpen, setNewTaskOpen] = useState(false);
+  const [editingAssigneesId, setEditingAssigneesId] = useState<string | null>(null);
 
-  const myTasks = useMemo(() => tasks.filter((t) => t.assigneeId === profile?.id), [tasks, profile]);
+  const myTasks = useMemo(
+    () => tasks.filter((t) => profile && t.assigneeIds.includes(profile.id)),
+    [tasks, profile],
+  );
   const open = myTasks.filter((t) => t.status === "open");
   const done = myTasks.filter((t) => t.status === "done");
 
@@ -121,19 +129,39 @@ export default function MyListPage() {
                         >
                           <Clock size={12} /> +1 day
                         </button>
-                        <select
-                          value={task.assigneeId ?? ""}
-                          onChange={(e) => reassignTask(task.id, e.target.value || null)}
-                          className="rounded-full border border-ink/12 bg-transparent px-2 py-0.5 text-[11px] text-ink/60"
-                        >
-                          <option value="">Unassigned</option>
-                          {users.map((u) => (
-                            <option key={u.id} value={u.id}>
-                              {u.initials}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex items-center gap-1">
+                          {task.assigneeIds.length === 0 ? (
+                            <span className="text-[11px] text-ink/40">Unassigned</span>
+                          ) : (
+                            <div className="flex -space-x-1.5">
+                              {task.assigneeIds.map((id) => {
+                                const u = userMap.get(id);
+                                return u ? (
+                                  <InitialsChip key={id} initials={u.initials} colour={u.colour} size="xs" title={u.name} />
+                                ) : null;
+                              })}
+                            </div>
+                          )}
+                          {isAdmin && (
+                            <button
+                              onClick={() => setEditingAssigneesId((cur) => (cur === task.id ? null : task.id))}
+                              aria-label="Edit assignees"
+                              className="text-ink/30"
+                            >
+                              <Pencil size={11} />
+                            </button>
+                          )}
+                        </div>
                       </div>
+                      {isAdmin && editingAssigneesId === task.id && (
+                        <div className="mt-2">
+                          <AssigneePicker
+                            users={users}
+                            value={task.assigneeIds}
+                            onChange={(ids) => setTaskAssignees(task.id, ids)}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Card>
