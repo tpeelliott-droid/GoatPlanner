@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Plus, Lightbulb, CalendarPlus, UserPlus, Mic } from "lucide-react";
+import { Plus, Lightbulb, UserPlus, Mic } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import NewIdeaSheet from "./NewIdeaSheet";
-import NewEventSheet from "../calendar/EventForm";
 import NewContactSheet from "../network/NewContactSheet";
 import VoiceNoteSheet from "./VoiceNoteSheet";
 
-type Panel = "menu" | "idea" | "event" | "contact" | "voice" | null;
+type Panel = "menu" | "idea" | "contact" | "voice" | null;
 
 export default function QuickCaptureButton() {
   const [panel, setPanel] = useState<Panel>(null);
@@ -29,7 +28,6 @@ export default function QuickCaptureButton() {
             className="mx-auto mb-[calc(env(safe-area-inset-bottom)+126px)] flex w-56 flex-col overflow-hidden rounded-2xl border border-white/10 bg-fairway"
           >
             <MenuItem icon={Lightbulb} label="New idea" onClick={() => setPanel("idea")} />
-            <MenuItem icon={CalendarPlus} label="New event" onClick={() => setPanel("event")} />
             <MenuItem icon={UserPlus} label="New contact" onClick={() => setPanel("contact")} />
             <MenuItem icon={Mic} label="Voice note" onClick={() => setPanel("voice")} last />
           </div>
@@ -45,7 +43,6 @@ export default function QuickCaptureButton() {
           }}
         />
       )}
-      {panel === "event" && <NewEventSheet onClose={() => setPanel(null)} />}
       {panel === "contact" && <NewContactSheet onClose={() => setPanel(null)} />}
       {panel === "voice" && (
         <VoiceNoteSheet

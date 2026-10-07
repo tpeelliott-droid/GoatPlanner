@@ -21,9 +21,10 @@ function placeholderFor(format: Format) {
 
 export default function FormatAngles({ idea }: { idea: Idea }) {
   const profile = useAuthStore((s) => s.profile);
-  // Mailer ideas track their content via the Articles list instead of a
-  // single angle blurb — see MailerArticles.
-  const formats = idea.formats.filter((f) => f !== "article");
+  // Mailer ideas track their content via the Articles list, and Event
+  // ideas via their own date/location fields — see MailerArticles and
+  // EventIdeaDetails — instead of a single angle blurb here.
+  const formats = idea.formats.filter((f) => f !== "article" && f !== "event");
 
   if (formats.length === 0) return null;
 

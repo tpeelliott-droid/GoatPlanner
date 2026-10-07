@@ -16,6 +16,10 @@ function monthLabel(monthKey: string) {
   return format(new Date(`${monthKey}-01T00:00:00`), "MMMM yyyy");
 }
 
+function todayStr() {
+  return format(new Date(), "yyyy-MM-dd");
+}
+
 export default function NewIdeaSheet({
   onClose,
   onCreated,
@@ -29,10 +33,14 @@ export default function NewIdeaSheet({
   const [pitch, setPitch] = useState("");
   const [formats, setFormats] = useState<Format[]>([]);
   const [monthKey, setMonthKey] = useState(currentMonthKey());
+  const [eventDate, setEventDate] = useState(todayStr());
+  const [eventTime, setEventTime] = useState("09:00");
+  const [eventLocation, setEventLocation] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const isMailer = formats.includes("article");
+  const isEvent = formats.includes("event");
 
   const existingMailerForMonth = useMemo(() => {
     if (!isMailer) return undefined;
@@ -60,6 +68,8 @@ export default function NewIdeaSheet({
           formats,
           ownerId: profile.id,
           monthKey: isMailer ? monthKey : undefined,
+          eventDate: isEvent ? new Date(`${eventDate}T${eventTime || "00:00"}`) : undefined,
+          eventLocation: isEvent ? eventLocation.trim() : undefined,
         },
         { id: profile.id, initials: profile.initials },
       );
@@ -94,6 +104,23 @@ export default function NewIdeaSheet({
           "{existingMailerForMonth.title}" is already the {monthLabel(monthKey)} mailer — saving will
           add a second one.
         </p>
+      )}
+      {isEvent && (
+        <>
+          <Field label="When">
+            <div className="grid grid-cols-2 gap-2">
+              <TextInput type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+              <TextInput type="time" value={eventTime} onChange={(e) => setEventTime(e.target.value)} />
+            </div>
+          </Field>
+          <Field label="Location">
+            <TextInput
+              value={eventLocation}
+              onChange={(e) => setEventLocation(e.target.value)}
+              placeholder="Fancourt, Studio 1…"
+            />
+          </Field>
+        </>
       )}
       <Field label="One-line pitch (optional)">
         <TextArea

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { format as formatDate } from "date-fns";
-import { ArrowLeft, ArrowUp, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, ArrowUp, Trash2 } from "lucide-react";
 import FormatTicks from "../common/FormatTicks";
-import InitialsChip from "../common/InitialsChip";
 import AssigneePicker from "../common/AssigneePicker";
 import StatusPill from "../common/StatusPill";
 import Button from "../common/Button";
@@ -11,10 +10,11 @@ import { TextArea, TextInput } from "../common/FormField";
 import EntryFeed from "./EntryFeed";
 import FormatAngles from "./FormatAngles";
 import MailerArticles from "./MailerArticles";
+import EventIdeaDetails from "./EventIdeaDetails";
 import IdeaScheduling from "./IdeaScheduling";
 import IdeaPeople from "./IdeaPeople";
 import { toggleUpvote, updateIdea, useIdea } from "../../hooks/useIdeas";
-import { useUsers, useUserMap } from "../../hooks/useUsers";
+import { useUsers } from "../../hooks/useUsers";
 import { useAuthStore } from "../../store/useAuthStore";
 import { IDEA_STATUS_LABELS, type Format, type IdeaStatus } from "../../types";
 
@@ -24,12 +24,10 @@ export default function IdeaDetailPage() {
   const profile = useAuthStore((s) => s.profile);
   const { idea, loading } = useIdea(id);
   const { data: users } = useUsers();
-  const userMap = useUserMap(users);
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(idea?.title ?? "");
   const [pitch, setPitch] = useState(idea?.pitch ?? "");
-  const [editingAssignees, setEditingAssignees] = useState(false);
 
   const isAdmin = profile?.role === "admin";
 
@@ -103,6 +101,12 @@ export default function IdeaDetailPage() {
                 {formatDate(new Date(`${idea.monthKey}-01T00:00:00`), "MMMM yyyy")} mailer
               </p>
             )}
+            {idea.formats.includes("event") && idea.eventDate && (
+              <p className="mt-0.5 text-xs uppercase tracking-wide text-ink/40">
+                {formatDate(idea.eventDate.toDate(), "EEEE d MMMM · HH:mm")}
+                {idea.eventLocation ? ` · ${idea.eventLocation}` : ""}
+              </p>
+            )}
             {idea.pitch && <p className="mt-1 text-sm text-ink/60">{idea.pitch}</p>}
           </button>
         )}
@@ -118,24 +122,16 @@ export default function IdeaDetailPage() {
         </div>
       )}
 
-      <div className="mb-5 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          {assigneeIds.map((id) => {
-            const u = userMap.get(id);
-            return u ? (
-              <InitialsChip key={id} initials={u.initials} colour={u.colour} size="xs" title={u.name} />
-            ) : null;
-          })}
-          {isAdmin && (
-            <button
-              onClick={() => setEditingAssignees((v) => !v)}
-              aria-label="Edit assignees"
-              className="text-ink/30"
-            >
-              <Pencil size={12} />
-            </button>
-          )}
-        </div>
+      <div className="mb-3">
+        <AssigneePicker
+          users={users}
+          value={assigneeIds}
+          onChange={isAdmin ? handleAssigneesChange : undefined}
+          readOnly={!isAdmin}
+        />
+      </div>
+
+      <div className="mb-5 flex justify-end">
         <button
           onClick={() => profile && toggleUpvote(idea, profile.id)}
           className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs transition ${
@@ -146,13 +142,8 @@ export default function IdeaDetailPage() {
         </button>
       </div>
 
-      {isAdmin && editingAssignees && (
-        <div className="mb-5">
-          <AssigneePicker users={users} value={assigneeIds} onChange={handleAssigneesChange} />
-        </div>
-      )}
-
       {idea.formats.includes("article") && <MailerArticles idea={idea} />}
+      {idea.formats.includes("event") && <EventIdeaDetails idea={idea} />}
       <FormatAngles idea={idea} />
       <IdeaScheduling idea={idea} />
       <EntryFeed ideaId={idea.id} />

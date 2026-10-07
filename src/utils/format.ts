@@ -5,6 +5,7 @@ export const FORMAT_COLOURS: Record<Format, string> = {
   video: "#C8622F",
   article: "#8FA98E",
   instagram: "#3E6B7D",
+  event: "#6B4984",
 };
 
 export const FORMAT_TEXT_ON_CHIP: Record<Format, string> = {
@@ -12,4 +13,5 @@ export const FORMAT_TEXT_ON_CHIP: Record<Format, string> = {
   video: "#F4EFE4",
   article: "#164A42",
   instagram: "#F4EFE4",
+  event: "#F4EFE4",
 };

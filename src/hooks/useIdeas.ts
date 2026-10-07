@@ -10,6 +10,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -75,6 +76,8 @@ export interface NewIdeaInput {
   priority?: "normal" | "high";
   ownerId: string;
   monthKey?: string;
+  eventDate?: Date;
+  eventLocation?: string;
 }
 
 export async function createIdea(input: NewIdeaInput, actor: { id: string; initials: string }) {
@@ -91,6 +94,8 @@ export async function createIdea(input: NewIdeaInput, actor: { id: string; initi
     upvotes: [],
     entryCount: 0,
     monthKey: input.monthKey ?? null,
+    eventDate: input.eventDate ? Timestamp.fromDate(input.eventDate) : null,
+    eventLocation: input.eventLocation ?? "",
     deletedAt: null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),

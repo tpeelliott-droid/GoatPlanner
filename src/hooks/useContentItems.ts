@@ -18,6 +18,7 @@ const CHECKLIST_TEMPLATES: Record<Format, string[]> = {
   video: ["Shot list ready", "Recorded", "Edited", "Thumbnail", "Scheduled"],
   article: ["Draft", "Edit", "Images", "Sponsor slot", "Sent"],
   instagram: ["Shot", "Edited", "Caption", "Scheduled"],
+  event: ["Venue confirmed", "Invites sent", "On the day", "Wrap-up"],
 };
 
 export function checklistTemplateFor(format: Format): ChecklistItem[] {

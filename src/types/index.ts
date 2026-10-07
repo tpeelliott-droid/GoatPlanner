@@ -1,8 +1,8 @@
 import type { Timestamp } from "firebase/firestore";
 
-export type Format = "podcast" | "video" | "article" | "instagram";
+export type Format = "podcast" | "video" | "article" | "instagram" | "event";
 
-export const FORMATS: Format[] = ["podcast", "video", "article", "instagram"];
+export const FORMATS: Format[] = ["podcast", "video", "article", "instagram", "event"];
 
 // Stored values (podcast/video/article/instagram) are kept as-is for
 // backwards compatibility with existing Firestore documents — only the
@@ -12,6 +12,7 @@ export const FORMAT_LABELS: Record<Format, string> = {
   video: "Long Video",
   article: "Mailer",
   instagram: "Reels",
+  event: "Event",
 };
 
 export type Role = "admin" | "contributor" | "guest";
@@ -63,6 +64,8 @@ export interface Idea {
   upvotes: string[]; // user ids who upvoted
   entryCount: number; // denormalised count of notes/images/links/voice entries
   monthKey?: string; // "YYYY-MM" — which month this Mailer (article-format idea) is for
+  eventDate?: Timestamp | null; // when this Event (event-format idea) happens
+  eventLocation?: string;
   linkedOrgIds?: string[];
   linkedPersonIds?: string[];
   deletedAt: Timestamp | null;
