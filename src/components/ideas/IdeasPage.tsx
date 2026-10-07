@@ -84,7 +84,8 @@ export default function IdeasPage() {
 
       <div className="space-y-2">
         {filtered.map((idea) => {
-          const owner = userMap.get(idea.ownerId);
+          const assigneeIds = idea.assigneeIds?.length ? idea.assigneeIds : [idea.ownerId];
+          const assignees = assigneeIds.map((id) => userMap.get(id)).filter((u): u is NonNullable<typeof u> => Boolean(u));
           const upvoted = profile ? idea.upvotes.includes(profile.id) : false;
           return (
             <Card key={idea.id} onClick={() => navigate(`/ideas/${idea.id}`)}>
@@ -98,7 +99,11 @@ export default function IdeasPage() {
               <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <StatusPill label={IDEA_STATUS_LABELS[idea.status]} tone={idea.status === "parked" ? "parked" : "progress"} />
-                  {owner && <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" />}
+                  <div className="flex -space-x-1.5">
+                    {assignees.map((u) => (
+                      <InitialsChip key={u.id} initials={u.initials} colour={u.colour} size="xs" title={u.name} />
+                    ))}
+                  </div>
                   {idea.entryCount > 0 && (
                     <span className="flex items-center gap-1 text-[11px] text-ink/40">
                       <MessageSquare size={11} /> {idea.entryCount}

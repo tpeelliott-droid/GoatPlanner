@@ -75,7 +75,8 @@ export default function HomeDashboard() {
 
       <div className="space-y-2">
         {filtered.map((idea) => {
-          const owner = userMap.get(idea.ownerId);
+          const assigneeIds = idea.assigneeIds?.length ? idea.assigneeIds : [idea.ownerId];
+          const assignees = assigneeIds.map((id) => userMap.get(id)).filter((u): u is NonNullable<typeof u> => Boolean(u));
           const isMailer = idea.formats.includes("article");
           const isEvent = idea.formats.includes("event");
           const summary = articleSummaries.get(idea.id);
@@ -108,7 +109,11 @@ export default function HomeDashboard() {
                     label={IDEA_STATUS_LABELS[idea.status]}
                     tone={idea.status === "parked" ? "parked" : "progress"}
                   />
-                  {owner && <InitialsChip initials={owner.initials} colour={owner.colour} size="xs" />}
+                  <div className="flex -space-x-1.5">
+                    {assignees.map((u) => (
+                      <InitialsChip key={u.id} initials={u.initials} colour={u.colour} size="xs" title={u.name} />
+                    ))}
+                  </div>
                 </div>
 
                 {isMailer && summary && summary.total > 0 ? (
