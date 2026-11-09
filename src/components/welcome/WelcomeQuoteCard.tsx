@@ -13,7 +13,7 @@ export default function WelcomeQuoteCard({ onDismiss }: { onDismiss: () => void 
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-dark-green px-8 text-center transition-opacity duration-150 ${
+      className={`fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 bg-dark-green px-8 text-center transition-opacity duration-150 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >

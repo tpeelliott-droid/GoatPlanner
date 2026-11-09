@@ -6,6 +6,16 @@ export const GARY_PLAYER_QUOTES = [
   "Golf is a puzzle without an answer.",
   "Golf asks something of a man. It makes one loathe mediocrity.",
   "If there's a golf course in heaven, I hope it's like Augusta National.",
+  "Golf is the closest game to the game we call life. You get bad breaks from good shots; you get good breaks from bad shots — but you have to play the ball where it lies.",
+  "I never pray to God to help me make a putt. I pray to Him to help me react good if I miss it.",
+  "Age is a case of mind over matter. If you don't mind, it doesn't matter.",
+  "The most important shot in golf is the next one.",
+  "I am a great believer in luck, and I find the harder I work, the more I have of it.",
+  "Concentration comes out of a combination of confidence and hunger.",
+  "I know I'm going to make a hole in one before I die. The Lord just hasn't scheduled it yet.",
+  "A good golf course doesn't allow you to overcome your mistakes. A great one forces you to overcome them.",
+  "Nobody wants to work, everybody wants to be famous.",
+  "I've always made a total effort, even when the odds seemed entirely against me.",
 ];
 
 const ORDER_KEY = "goatplanner.quoteOrder";
